@@ -1,0 +1,13 @@
+name = "Calculator"
+uuid = "db3c262e-fe57-55aa-ad54-d3c64a4d0c83"
+authors = ["Tom Kwong <tk3369@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+SaferIntegers = "88634af6-177f-5301-88b8-7819386cfa38"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
