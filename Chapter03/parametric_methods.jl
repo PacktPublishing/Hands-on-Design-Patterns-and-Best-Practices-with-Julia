@@ -155,7 +155,35 @@ group_same_things(a1, s1)
 # Closest candidates are:
 #   group_same_things(::T<:Thing, ::T<:Thing) where T<:Thing at REPL[52]:2
 
-# --- enforce type relationships
+# ----------------------------------------------------------------------
+# Extracting type info
+
+eltype(things::AbstractVector{T}) where {T <: Thing} = T
+
+eltype([s1, s2])
+eltype([a1, a2])
+eltype([s1, s2, a1, a2])
+
+# julia> eltype([s1, s2])
+# Spaceship
+
+# julia> eltype([a1, a2])
+# Asteroid
+
+# julia> eltype([s1, s2, a1, a2])
+# Thing
+
+# julia> typeof([s1, s2])
+# Array{Spaceship,1}
+
+# julia> typeof([a1, a2])
+# Array{Asteroid,1}
+
+# julia> typeof([s1, s2, a1, a2])
+# Array{Thing,1}
+
+# ----------------------------------------------------------------------
+# Enforce type relationships
 
 function leap!(A::Spaceship, 
         leaps::AbstractVector{T}, 
@@ -183,21 +211,22 @@ julia> travel(s1, 1e30, 30)
 Teleport 1.0e30 at 30 degrees
 
 
-# --- collection types
+# ----------------------------------------------------------------------
+# collection types in parametric methods
 
 targets1 = [a1, a2]
 targets2 = [s2, a1, a2]
 
-julia> targets1 = [a1, a2]
-2-element Array{Asteroid,1}:
- Asteroid (20,0) 20x20
- Asteroid (0,20) 20x20
+# julia> targets1 = [a1, a2]
+# 2-element Array{Asteroid,1}:
+#  Asteroid (20,0) 20x20
+#  Asteroid (0,20) 20x20
 
-julia> targets2 = [s2, a1, a2]
-3-element Array{Thing,1}:
- Spaceship (10,0) 30x5/Laser
- Asteroid (20,0) 20x20      
- Asteroid (0,20) 20x20      
+# julia> targets2 = [s2, a1, a2]
+# 3-element Array{Thing,1}:
+#  Spaceship (10,0) 30x5/Laser
+#  Asteroid (20,0) 20x20      
+#  Asteroid (0,20) 20x20      
 
 # attack an array of target objects
 function attack(A::Spaceship, B::AbstractVector{T}) where {T <: Thing}
@@ -209,14 +238,14 @@ end
 attack(s1, targets1)
 attack(s1, targets2)
 
-julia> attack(s1, targets1)
-Spaceship (0,0) 30x5/Missile --attack--> Asteroid (20,0) 20x20
-Spaceship (0,0) 30x5/Missile --attack--> Asteroid (0,20) 20x20
+# julia> attack(s1, targets1)
+# Spaceship (0,0) 30x5/Missile --attack--> Asteroid (20,0) 20x20
+# Spaceship (0,0) 30x5/Missile --attack--> Asteroid (0,20) 20x20
 
-julia> attack(s1, targets2)
-Spaceship (0,0) 30x5/Missile --attack--> Spaceship (10,0) 30x5/Laser
-Spaceship (0,0) 30x5/Missile --attack--> Asteroid (20,0) 20x20
-Spaceship (0,0) 30x5/Missile --attack--> Asteroid (0,20) 20x20
+# julia> attack(s1, targets2)
+# Spaceship (0,0) 30x5/Missile --attack--> Spaceship (10,0) 30x5/Laser
+# Spaceship (0,0) 30x5/Missile --attack--> Asteroid (20,0) 20x20
+# Spaceship (0,0) 30x5/Missile --attack--> Asteroid (0,20) 20x20
 
 # what if we just use abstract type?
 function attack(A::Spaceship, B::AbstractVector{Thing})
@@ -237,7 +266,8 @@ attack(s1, [s2, a1, a2])
 
 # Moral of the story -> parametric method is dispatched for homongenous vector
 
-# --- more parameters?
+# ----------------------------------------------------------------------
+# more parameters?
 
 function move_all(things::AbstractVector{T}, height::S) where {S <: Signed, T <: Thing}
     for t in things
@@ -287,29 +317,4 @@ foreach(println, [s1, s2, a1, a2])
 # Asteroid (20,300) 20x20
 # Asteroid (0,320) 20x20
 
-# ----------------------------------------------------------------------
-# Extracting type info
 
-eltype(things::AbstractVector{T}) where {T <: Thing} = T
-
-eltype([s1, s2])
-eltype([a1, a2])
-eltype([s1, s2, a1, a2])
-
-# julia> eltype([s1, s2])
-# Spaceship
-
-# julia> eltype([a1, a2])
-# Asteroid
-
-# julia> eltype([s1, s2, a1, a2])
-# Thing
-
-# julia> typeof([s1, s2])
-# Array{Spaceship,1}
-
-# julia> typeof([a1, a2])
-# Array{Asteroid,1}
-
-# julia> typeof([s1, s2, a1, a2])
-# Array{Thing,1}
