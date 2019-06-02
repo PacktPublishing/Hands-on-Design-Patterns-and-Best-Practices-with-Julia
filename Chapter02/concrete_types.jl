@@ -21,24 +21,22 @@ end
 
 Stock("AAPL", "Apple, Inc.")  # US NASDAQ 
 
-# --- REPL ---
-"""
+#= REPL
 julia> Stock("AAPL", "Apple, Inc.")  # US NASDAQ
 Stock("AAPL", "Apple, Inc.")
-"""
+=#
 
 # Create an instance
 s = Stock("AAPL", "Apple, Inc.")
 
 # It's immutable!
-# --- REPL ---
-"""
+#= REPL
 julia> s.symbol = "foo"
 ERROR: setfield! immutable struct of type Stock cannot be changed
 Stacktrace:
  [1] setproperty!(::Stock, ::Symbol, ::String) at ./sysimg.jl:19
  [2] top-level scope at none:0
-"""
+=#
 
 # Create another type
 # Note that types are specified here
@@ -55,19 +53,16 @@ many_stocks = [
 # Create a basket of stocks
 bs = BasketOfStocks(many_stocks, "Anniversary gift for my wife")
 
-# --- REPL ---
-"""
+#= REPL
 julia> bs = BasketOfStocks(many_stocks, "Anniversary gift for my wife")
 BasketOfStocks(Stock[Stock("AAPL", "Apple, Inc."), Stock("IBM", "IBM")], "Anniversary gift for my wife")
-
-==> not really immutable!
 
 julia> pop!(bs.stocks)
 Stock("IBM", "IBM")
 
 julia> bs
 BasketOfStocks(Stock[Stock("AAPL", "Apple, Inc.")], "Anniversary gift for my wife")
-"""
+=#
 
 # ----------------------------------------
 # mutable structs
@@ -81,8 +76,7 @@ holding = StockHolding(Stock("AAPL", "Apple, Inc."), 100)
 holding.quantity += 200
 holding
 
-# --- REPL ---
-"""
+#= REPL
 julia> mutable struct StockHolding
            stock::Stock
            quantity::Int
@@ -96,4 +90,4 @@ julia> holding.quantity += 200
 
 julia> holding
 StockHolding(Stock("AAPL", "Apple, Inc."), 300)
-"""
+=#

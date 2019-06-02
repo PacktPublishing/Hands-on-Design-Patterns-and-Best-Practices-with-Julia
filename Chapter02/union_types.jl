@@ -40,8 +40,7 @@ struct Holding
     quantity::Int
 end
 
-# how does it work?
-"""
+#= REPL
 julia> aapl = Stock("AAPL", "Apple, Inc.")
 Stock("AAPL", "Apple, Inc.")
 
@@ -58,7 +57,7 @@ julia> my_holdings = [h1, h2]
 2-element Array{Holding,1}:
  Holding(Stock("AAPL", "Apple, Inc."), 100)           
  Holding(Painting("Leonardo da Vinci", "Monalisa"), 1)
-"""
+=#
 
 const ValuableThing = Union{Stock, Painting}
 
@@ -67,7 +66,7 @@ struct Holding
     quantity::Int
 end
 
-"""
+#= REPL
 julia> h3 = Holding(Painting("Vincent Van Gogh", "Starry Night"), 1)
 Holding(Painting("Vincent Van Gogh", "Starry Night"), 1)
-"""
+=#
