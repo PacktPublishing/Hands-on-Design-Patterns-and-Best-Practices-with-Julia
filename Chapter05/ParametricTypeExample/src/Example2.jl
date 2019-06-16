@@ -47,10 +47,10 @@ end
 
 # Regardless of the instrument being traded, the direction of 
 # trade (long or short) determines the sign of the payment amount.
-sign(t::SingleTrade) = t.type == Long ? 1 : -1
+sign(t::SingleTrade{T}) where {T} = t.type == Long ? 1 : -1
 
 # market value of a trade is simply quantity times price
-payment(t::SingleTrade) = sign(t) * t.quantity * t.price
+payment(t::SingleTrade{T}) where {T} = sign(t) * t.quantity * t.price
 
 # stock options are special
 # by convention, each option contract refers to 100 underlying shares of the stock

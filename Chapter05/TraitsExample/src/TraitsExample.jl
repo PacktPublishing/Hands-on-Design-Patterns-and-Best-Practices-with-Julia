@@ -1,6 +1,8 @@
 module TraitsExample
 
-export Residence, Stock, Money, Book,
+using SimpleTraits
+
+export Residence, Stock, TreasuryBill, Money, Book,
  tradable, marketprice, 
  itradable, imarketprice
 
@@ -25,6 +27,10 @@ end
 struct Stock <: Equity
     symbol
     name
+end
+
+struct TreasuryBill <: Bond
+    cusip
 end
 
 struct Money <: Cash
@@ -58,36 +64,62 @@ tradable(::IsIlliquid, x) = false
 
 # The thing has a market price if it is liquid
 marketprice(x::T) where {T} = marketprice(LiquidityStyle(T), x)
-marketprice(::IsLiquid, x) = stub("Will implement pricing function", 0.00)
-marketprice(::IsIlliquid, x) = stub("Price for illiquid asset $x is not available.", NaN)
+marketprice(::IsLiquid, x) = error("Please implement pricing function for ", typeof(x))
+marketprice(::IsIlliquid, x) = error("Price for illiquid asset $x is not available.")
 
-# Pricing for Money
+# Sample pricing functions for Money and Stock
 marketprice(x::Money) = x.amount
-
-# A stub function that display a message and then just return the provided value
-function stub(s::String, x) 
-    println(s)
-    return x
-end
+marketprice(x::Stock) = rand(4000:5000)
 
 # --- testing ---
 
-function trait_test1()
-    println("\n=== Test Cash ===")
+function trait_test_cash()
     cash = Money("USD", 100.00)
     @show tradable(cash)
     @show marketprice(cash)
+end
 
-    println("\n=== Test Stock ===")
+function trait_test_stock()
     aapl = Stock("AAPL", "Apple, Inc.")
     @show tradable(aapl)
     @show marketprice(aapl)
-
-    println("\n=== Test Residence ===")
-    home = Residence("Los Angeles")
-    @show tradable(home)
-    @show marketprice(home)
 end
+
+function trait_test_residence()
+    try 
+        home = Residence("Los Angeles")
+        @show tradable(home)
+        @show marketprice(home)
+    catch ex
+        println(ex)
+    end
+end
+
+function trait_test_bond()
+    bill = TreasuryBill("123456789")
+    @show tradable(bill)
+    @show marketprice(bill)
+end
+
+#= REPL
+julia> TraitsExample.trait_test_cash()
+tradable(cash) = true
+marketprice(cash) = 100.0
+100.0
+
+julia> TraitsExample.trait_test_stock()
+tradable(aapl) = true
+marketprice(aapl) = 4384
+4384
+
+julia> TraitsExample.trait_test_residence()
+tradable(home) = false
+ErrorException("Price for illiquid asset Residence(\"Los Angeles\") is not available.")
+
+julia> TraitsExample.trait_test_bond()
+tradable(bill) = true
+ERROR: Please implement pricing function for TreasuryBill
+=#
 
 # --- what if we need to use the trait for another thing e.g. a book? ---
 

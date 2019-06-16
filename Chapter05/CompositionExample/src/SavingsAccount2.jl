@@ -1,5 +1,7 @@
 # SavingsAccount2 is same as SavingsAccount but uses Lazy's @forward macro
 
+export SavingsAccount2
+
 using Lazy: @forward
 
 # We will use Composition pattern to gain existing Account functionality.
@@ -30,15 +32,3 @@ function accrue_daily_interest!(sa::SavingsAccount2)
     deposit!(sa.acct, interest)
 end
 
-# Test
-function test_savings_account2()
-    acct = SavingsAccount2("5678", 3000.00, Date(2019, 3, 1), 0.03)
-    acct2 = SavingsAccount2("6000", 1000.00, Date(2019, 3, 1), 0.03)
-    @show acct acct2
-    @show deposit!(acct, 200)
-    @show withdraw!(acct, 100)
-    @show transfer!(acct, acct2, 500)
-    @show accrue_daily_interest!(acct)
-    @show accrue_daily_interest!(acct)
-    @show accrue_daily_interest!(acct)
-end
