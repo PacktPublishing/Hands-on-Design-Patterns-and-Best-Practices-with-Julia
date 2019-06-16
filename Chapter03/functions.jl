@@ -17,9 +17,9 @@ struct Widget
 end
 
 # Define pretty print functions
-Base.show(io::IO, p::Position) = print(io, "(", p.x, ",", p.y, ")")
-Base.show(io::IO, s::Size) = print(io, s.width, " x ", s.height)
-Base.show(io::IO, w::Widget) = print(io, w.name, " at ", w.position, " size ", w.size)
+# Base.show(io::IO, p::Position) = print(io, "(", p.x, ",", p.y, ")")
+# Base.show(io::IO, s::Size) = print(io, s.width, " x ", s.height)
+# Base.show(io::IO, w::Widget) = print(io, w.name, " at ", w.position, " size ", w.size)
 
 # single-line functions
 move_up!(widget, v)    = widget.position.y -= v
@@ -32,49 +32,53 @@ function move_up!(widget, v)
     widget.position.y -= v
 end
 
-# let's test these functions
-w = Widget("asteroid", Position(0, 0), Size(10, 20))
-move_up!(w, 10)
-move_down!(w, 10)
-move_left!(w, 20)
-move_right!(w, 20)
-print(w)   # should be back to position (0,0)
-# REPL
-# julia> w = Widget("asteroid", Position(0, 0), Size(10, 20))
-# asteroid at (0,0) size 10 x 20
-
-# julia> move_up!(w, 10)
-# -10
-
-# julia> move_down!(w, 10)
-# 0
-
-# julia> move_left!(w, 20)
-# -20
-
-# julia> move_right!(w, 20)
-# 0
-
-# julia> print(w) 
-# asteroid at (0,0) size 10 x 20
-
-
 # behavior without annotating type in arguments
 move_up!(1, 2)
-# REPL
-# julia> move_up!(1, 2)
-# ERROR: type Int64 has no field position
+#= REPL
+julia> move_up!(1, 2)
+ERROR: type Int64 has no field position
+=#
 
 # Now, restart REPL.
-# Redfine with type annotation.
-move_up!(widget::Widget, v::Real) = widget.position.y -= v
+# Re-evaluate the struct definitions.
+# Then, define the following functions.
+move_up!(widget::Widget, v::Int)    = widget.position.y -= v
+move_down!(widget::Widget, v::Int)  = widget.position.y += v
+move_left!(widget::Widget, v::Int)  = widget.position.x -= v
+move_right!(widget::Widget, v::Int) = widget.position.x += v
 move_up!(1, 2)
 
-# REPL
-# julia> move_up!(1, 2)
-# ERROR: MethodError: no method matching move_up!(::Float64, ::Float64)
-# Closest candidates are:
-#   move_up!(::Widget, ::Real) at REPL[7]:1
+#= REPL
+julia> move_up!(1, 2)
+ERROR: MethodError: no method matching move_up!(::Int64, ::Int64)
+Closest candidates are:
+  move_up!(::Widget, ::Int64) at REPL[5]:1
+=#
+
+# Define pretty print functions
+Base.show(io::IO, p::Position) = print(io, "(", p.x, ",", p.y, ")")
+Base.show(io::IO, s::Size) = print(io, s.width, " x ", s.height)
+Base.show(io::IO, w::Widget) = print(io, w.name, " at ", w.position, " size ", w.size)
+
+#= REPL
+julia> w = Widget("asteroid", Position(0, 0), Size(10, 20))
+asteroid at (0,0) size 10 x 20
+
+julia> move_up!(w, 10)
+-10
+
+julia> move_down!(w, 10)
+0
+
+julia> move_left!(w, 20)
+-20
+
+julia> move_right!(w, 20)
+0
+
+julia> print(w) # should be back to position (0,0)
+asteroid at (0,0) size 10 x 20
+=#
 
 # ------------------------------------------------------------------------------
 # Optional arguments
@@ -88,44 +92,57 @@ function make_asteroids(N::Int, pos_range = 0:200, size_range = 10:30)
                 Size(sz_rand(), sz_rand())) 
         for i in 1:N]
 end
-# REPL
-# julia> make_asteroids
-# make_asteroids (generic function with 3 methods)
-#
-# julia> make_asteroids(     <-- hit TAB key
-# make_asteroids(N::Int64) in Main at REPL[21]:12
-# make_asteroids(N::Int64, pos_range) in Main at REPL[21]:12
-# make_asteroids(N::Int64, pos_range, size_range) in Main at REPL[21]:12
 
 asteroids = make_asteroids(5)
-# REPL
-# julia> asteroids = make_asteroids(5)
-# 5-element Array{Widget,1}:
-#  Asteroid #1 at (129,172) size 20 x 17
-#  Asteroid #2 at (93,143) size 29 x 22 
-#  Asteroid #3 at (157,152) size 26 x 14
-#  Asteroid #4 at (120,3) size 26 x 15  
-#  Asteroid #5 at (5,178) size 20 x 26  
+#= REPL
+julia> asteroids = make_asteroids(5)
+5-element Array{Widget,1}:
+Asteroid #1 at (129,172) size 20 x 17
+Asteroid #2 at (93,143) size 29 x 22 
+Asteroid #3 at (157,152) size 26 x 14
+Asteroid #4 at (120,3) size 26 x 15 
+Asteroid #5 at (5,178) size 20 x 26
+=#
 
 asteroids = make_asteroids(5, 1:10)
-# REPL
-# julia> asteroids = make_asteroids(5, 1:10)
-# 5-element Array{Widget,1}:
-#  Asteroid #1 at (4,10) size 10 x 20
-#  Asteroid #2 at (4,5) size 27 x 14 
-#  Asteroid #3 at (3,1) size 12 x 16 
-#  Asteroid #4 at (5,9) size 28 x 26 
-#  Asteroid #5 at (4,3) size 11 x 28 
+#= REPL
+julia> asteroids = make_asteroids(5, 1:10)
+5-element Array{Widget,1}:
+Asteroid #1 at (4,10) size 10 x 20
+Asteroid #2 at (4,5) size 27 x 14 
+Asteroid #3 at (3,1) size 12 x 16 
+Asteroid #4 at (5,9) size 28 x 26 
+Asteroid #5 at (4,3) size 11 x 28  
+=#
 
-asteroids = make_asteroids(5, 0:100:500, 5:5:10)
-# REPL
-# julia> asteroids = make_asteroids(5, 0:100:500, 5:5:10)
-# 5-element Array{Widget,1}:
-#  Asteroid #1 at (100,400) size 10 x 10
-#  Asteroid #2 at (500,400) size 10 x 10
-#  Asteroid #3 at (500,100) size 5 x 5  
-#  Asteroid #4 at (200,0) size 5 x 10   
-#  Asteroid #5 at (300,300) size 5 x 10 
+# --- how to find methods? ---
+
+#= REPL
+julia> make_asteroids
+make_asteroids (generic function with 3 methods)
+
+julia> make_asteroids(
+make_asteroids(N::Int64) in Main at REPL[20]:2
+make_asteroids(N::Int64, pos_range) in Main at REPL[20]:2
+make_asteroids(N::Int64, pos_range, size_range) in Main at REPL[20]:2
+
+julia> methods(make_asteroids)
+# 3 methods for generic function "make_asteroids":
+[1] make_asteroids(N::Int64) in Main at REPL[20]:2
+[2] make_asteroids(N::Int64, pos_range) in Main at REPL[20]:2
+[3] make_asteroids(N::Int64, pos_range, size_range) in Main at REPL[20]:2
+=#
+
+# --- fully specify arguments ---
+#= REPL
+julia> asteroids = make_asteroids(5, 100:5:200, 200:10:500)
+5-element Array{Widget,1}:
+ Asteroid #1 at (180,105) size 290 x 390
+ Asteroid #2 at (145,115) size 410 x 200
+ Asteroid #3 at (195,115) size 460 x 410
+ Asteroid #4 at (200,185) size 450 x 370
+ Asteroid #5 at (115,180) size 450 x 360
+=#
 
 # ------------------------------------------------------------------------------
 # keyword arguments
@@ -140,22 +157,43 @@ function make_asteroids2(N::Int; pos_range = 0:200, size_range = 10:30)
 end
 
 asteroids = make_asteroids2(5, pos_range = 0:100:500)
-# julia> asteroids = make_asteroids2(5, pos_range = 0:100:500)
-# 5-element Array{Widget,1}:
-#  Asteroid #1 at (200,500) size 29 x 25
-#  Asteroid #2 at (100,400) size 18 x 28
-#  Asteroid #3 at (400,500) size 13 x 10
-#  Asteroid #4 at (200,500) size 12 x 23
-#  Asteroid #5 at (200,500) size 16 x 12
+#= REPL
+julia> asteroids = make_asteroids2(5, pos_range = 0:100:500)
+5-element Array{Widget,1}:
+ Asteroid #1 at (200,500) size 29 x 25
+ Asteroid #2 at (100,400) size 18 x 28
+ Asteroid #3 at (400,500) size 13 x 10
+ Asteroid #4 at (200,500) size 12 x 23
+ Asteroid #5 at (200,500) size 16 x 12
+=#
 
 asteroids = make_asteroids2(5, size_range = 1:5, pos_range = 0:10:100)
-# julia> asteroids = make_asteroids2(5, size_range = 1:5, pos_range = 0:10:100)
-# 5-element Array{Widget,1}:
-#  Asteroid #1 at (10,90) size 4 x 1
-#  Asteroid #2 at (30,20) size 5 x 3
-#  Asteroid #3 at (10,70) size 3 x 5
-#  Asteroid #4 at (70,70) size 5 x 2
-#  Asteroid #5 at (0,60) size 3 x 3 
+#=
+julia> asteroids = make_asteroids2(5, size_range = 1:5, pos_range = 0:10:100)
+5-element Array{Widget,1}:
+ Asteroid #1 at (10,90) size 4 x 1
+ Asteroid #2 at (30,20) size 5 x 3
+ Asteroid #3 at (10,70) size 3 x 5
+ Asteroid #4 at (70,70) size 5 x 2
+ Asteroid #5 at (0,60) size 3 x 3 
+ =#
+
+function make_asteroids3(; N::Int, pos_range = 0:200, size_range = 10:30)
+    pos_rand() = rand(pos_range)
+    sz_rand() = rand(size_range)
+    return [Widget("Asteroid #$i", 
+                Position(pos_rand(), pos_rand()), 
+                Size(sz_rand(), sz_rand())) 
+        for i in 1:N]
+end
+
+#= REPL
+julia> make_asteroids3(N = 3)
+3-element Array{Widget,1}:
+ Asteroid #1 at (100,46) size 13 x 14 
+ Asteroid #2 at (168,132) size 26 x 20
+ Asteroid #3 at (135,104) size 19 x 10
+=#
 
 # ------------------------------------------------------------------------------
 # Variable arguments, aka "slurping"
@@ -202,20 +240,23 @@ spaceships = [Widget("Spaceship $i", Position(0,0), Size(20, 50))
                 for i in 1:3]
 triangular_formation!(spaceships...);
 spaceships
-# julia> spaceships = [Widget("Spaceship $i", Position(0,0), Size(20, 50)) 
-#                        for i in 1:3]
-# 3-element Array{Widget,1}:
-#  Spaceship 1 at (0,0) size 20 x 50
-#  Spaceship 2 at (0,0) size 20 x 50
-#  Spaceship 3 at (0,0) size 20 x 50
 
-# julia> triangular_formation!(spaceships...);
+#= REPL
+julia> spaceships = [Widget("Spaceship $i", Position(0,0), Size(20, 50)) 
+                       for i in 1:3]
+3-element Array{Widget,1}:
+ Spaceship 1 at (0,0) size 20 x 50
+ Spaceship 2 at (0,0) size 20 x 50
+ Spaceship 3 at (0,0) size 20 x 50
 
-# julia> spaceships
-# 3-element Array{Widget,1}:
-#  Spaceship 1 at (0,0) size 20 x 50    
-#  Spaceship 2 at (-30,-50) size 20 x 50
-#  Spaceship 3 at (30,-50) size 20 x 50 
+julia> triangular_formation!(spaceships...);
+
+julia> spaceships
+3-element Array{Widget,1}:
+ Spaceship 1 at (0,0) size 20 x 50    
+ Spaceship 2 at (-30,-50) size 20 x 50
+ Spaceship 3 at (30,-50) size 20 x 50 
+=#
 
 # ------------------------------------------------------------------------------
 # first class functions
@@ -229,18 +270,19 @@ function random_leap!(w::Widget, move_func::Function, distance::Int)
     return w
 end
 
-spaceship = Widget("Spaceship", Position(0,0), Size(20,50))
-random_leap!(spaceship, random_move(), rand(50:100))
-random_leap!(spaceship, random_move(), rand(50:100))
+#= REPL
+julia> spaceship = Widget("Spaceship", Position(0,0), Size(20,50))
+Spaceship at (0,0) size 20 x 50
 
-# julia> spaceship = Widget("Spaceship", Position(0,0), Size(20,50))
-# Spaceship at (0,0) size 20 x 50
+julia> random_leap!(spaceship, random_move(), rand(50:100))
+Spaceship at (0,82) size 20 x 50
 
-# julia> random_leap!(spaceship, random_move(), rand(50:100))
-# Spaceship at (0,71) size 20 x 50
+julia> random_leap!(spaceship, random_move(), rand(50:100))
+Spaceship at (0,15) size 20 x 50
 
-# julia> random_leap!(spaceship, random_move(), rand(50:100))
-# Spaceship at (78,71) size 20 x 50
+julia> random_leap!(spaceship, random_move(), rand(50:100))
+Spaceship at (-63,15) size 20 x 50
+=#
 
 # ------------------------------------------------------------------------------
 # anonymous functions
@@ -255,12 +297,14 @@ function clean_up_galaxy(asteroids)
     foreach(explode, asteroids)
 end
 
-# julia> clean_up_galaxy(asteroids)
-# Asteroid #1 at (10,0) size 1 x 2 exploded!
-# Asteroid #2 at (30,50) size 1 x 1 exploded!
-# Asteroid #3 at (40,60) size 5 x 3 exploded!
-# Asteroid #4 at (0,20) size 3 x 1 exploded!
-# Asteroid #5 at (80,50) size 3 x 5 exploded!
+#= REPL
+julia> clean_up_galaxy(asteroids)
+Asteroid #1 at (10,0) size 1 x 2 exploded!
+Asteroid #2 at (30,50) size 1 x 1 exploded!
+Asteroid #3 at (40,60) size 5 x 3 exploded!
+Asteroid #4 at (0,20) size 3 x 1 exploded!
+Asteroid #5 at (80,50) size 3 x 5 exploded!
+=#
 
 # using anonymous function
 function clean_up_galaxy(asteroids)
@@ -274,21 +318,23 @@ function clean_up_galaxy(asteroids, spaceships)
     foreach(ep, spaceships)
 end
 
-# julia> clean_up_galaxy(asteroids, spaceships)
-# Asteroid #1 at (10,0) size 1 x 2 exploded!
-# Asteroid #2 at (30,50) size 1 x 1 exploded!
-# Asteroid #3 at (40,60) size 5 x 3 exploded!
-# Asteroid #4 at (0,20) size 3 x 1 exploded!
-# Asteroid #5 at (80,50) size 3 x 5 exploded!
-# Spaceship 1 at (0,0) size 20 x 50 exploded!
-# Spaceship 2 at (-30,-50) size 20 x 50 exploded!
-# Spaceship 3 at (30,-50) size 20 x 50 exploded!
+#= REPL
+julia> clean_up_galaxy(asteroids, spaceships)
+Asteroid #1 at (10,0) size 1 x 2 exploded!
+Asteroid #2 at (30,50) size 1 x 1 exploded!
+Asteroid #3 at (40,60) size 5 x 3 exploded!
+Asteroid #4 at (0,20) size 3 x 1 exploded!
+Asteroid #5 at (80,50) size 3 x 5 exploded!
+Spaceship 1 at (0,0) size 20 x 50 exploded!
+Spaceship 2 at (-30,-50) size 20 x 50 exploded!
+Spaceship 3 at (30,-50) size 20 x 50 exploded!
+=#
 
 # ------------------------------------------------------------------------------
 # do syntax
 
 # Random healthiness function for testing
-healthy(spacehsip) = rand(Bool)
+healthy(spaceship) = rand(Bool)
 
 # make sure that the spaceship is healthy before any operation 
 function fire(f::Function, spaceship::Widget)

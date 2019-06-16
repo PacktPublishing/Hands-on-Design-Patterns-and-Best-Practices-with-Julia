@@ -60,17 +60,21 @@ function explode(things::AbstractVector{T}) where {T}
 end
 
 explode([a1, a2])
-# julia> explode([a1, a2])
-# Exploding Asteroid (20,0) 20x20
-# Exploding Asteroid (0,20) 20x20
+#= REPL
+julia> explode([a1, a2])
+Exploding Asteroid (20,0) 20x20
+Exploding Asteroid (0,20) 20x20
+=#
 
 explode([:building, :hill])
-# julia> explode([:building, :hill])
-# Exploding building
-# Exploding hill
+#= REPL
+julia> explode([:building, :hill])
+Exploding building
+Exploding hill
 
-# julia> Vector{Asteroid} <: AbstractVector{Asteroid}
-# true
+julia> Vector{Asteroid} <: AbstractVector{Asteroid}
+true
+=#
 
 # Same function with a more narrow type
 function explode(things::AbstractVector{T}) where {T <: Thing}
@@ -80,9 +84,11 @@ function explode(things::AbstractVector{T}) where {T <: Thing}
 end
 
 explode([a1, a2])
-# julia> explode([a1, a2])
-# Exploding thing => Asteroid (20,0) 20x20
-# Exploding thing => Asteroid (0,20) 20x20
+#= REPL
+julia> explode([a1, a2])
+Exploding thing => Asteroid (20,0) 20x20
+Exploding thing => Asteroid (0,20) 20x20
+=#
 
 # ---------------
 
@@ -92,9 +98,11 @@ function tow(A::Spaceship, B::Thing)
 end
 
 methods(tow)
-# julia> methods(tow)
-# # 1 method for generic function "tow":
-# [1] tow(A::Spaceship, B::Thing) in Main at REPL[17]:8
+#=
+julia> methods(tow)
+# 1 method for generic function "tow":
+[1] tow(A::Spaceship, B::Thing) in Main at REPL[17]:8
+=#
 
 # equivalent of parametric type 
 function tow(A::Spaceship, B::T) where {T <: Thing}
@@ -102,9 +110,11 @@ function tow(A::Spaceship, B::T) where {T <: Thing}
 end
 
 methods(tow)
-# julia> methods(tow)
-# # 1 method for generic function "tow":
-# [1] tow(A::Spaceship, B::T) where T<:Thing in Main at REPL[20]:2
+#= REPL
+julia> methods(tow)
+# 1 method for generic function "tow":
+[1] tow(A::Spaceship, B::T) where T<:Thing in Main at REPL[20]:2
+=#
 
 # --- ensure type consistency
 
@@ -117,17 +127,19 @@ group_anything(a1, a2)
 group_anything(s1, a1)
 group_anything(a1, s1)
 
-# julia> group_anything(s1, s2)
-# Grouped Spaceship (0,0) 30x5/Missile and Spaceship (10,0) 30x5/Laser
+#= REPL
+julia> group_anything(s1, s2)
+Grouped Spaceship((0,0), 30 x 5, Missile::Weapon = 1) and Spaceship((10,0), 30 x 5, Laser::Weapon = 0)
 
-# julia> group_anything(a1, a2)
-# Grouped Asteroid (20,0) 20x20 and Asteroid (0,20) 20x20
+julia> group_anything(a1, a2)
+Grouped Asteroid((20,0), 20 x 20) and Asteroid((0,20), 20 x 20)
 
-# julia> group_anything(s1, a1)
-# Grouped Spaceship (0,0) 30x5/Missile and Asteroid (20,0) 20x20
+julia> group_anything(s1, a1)
+Grouped Spaceship((0,0), 30 x 5, Missile::Weapon = 1) and Asteroid((20,0), 20 x 20)
 
-# julia> group_anything(a1, s1)
-# Grouped Asteroid (20,0) 20x20 and Spaceship (0,0) 30x5/Missile
+julia> group_anything(a1, s1)
+Grouped Asteroid((20,0), 20 x 20) and Spaceship((0,0), 30 x 5, Missile::Weapon = 1)
+=#
 
 
 function group_same_things(A::T, B::T) where {T <: Thing}
@@ -139,21 +151,23 @@ group_same_things(a1, a2)
 group_same_things(s1, a1)
 group_same_things(a1, s1)
 
-# julia> group_same_things(s1, s2)
-# Grouped Spaceship (0,0) 30x5/Missile and Spaceship (10,0) 30x5/Laser
+#=
+julia> group_same_things(s1, s2)
+Grouped Spaceship((0,0), 30 x 5, Missile::Weapon = 1) and Spaceship((10,0), 30 x 5, Laser::Weapon = 0)
 
-# julia> group_same_things(a1, a2)
-# Grouped Asteroid (20,0) 20x20 and Asteroid (0,20) 20x20
+julia> group_same_things(a1, a2)
+Grouped Asteroid((20,0), 20 x 20) and Asteroid((0,20), 20 x 20)
 
-# julia> group_same_things(s1, a1)
-# ERROR: MethodError: no method matching group_same_things(::Spaceship, ::Asteroid)
-# Closest candidates are:
-#   group_same_things(::T<:Thing, ::T<:Thing) where T<:Thing at REPL[52]:2
+julia> group_same_things(s1, a1)
+ERROR: MethodError: no method matching group_same_things(::Spaceship, ::Asteroid)
+Closest candidates are:
+  group_same_things(::T<:Thing, ::T<:Thing) where T<:Thing at REPL[88]:2
 
-# julia> group_same_things(a1, s1)
-# ERROR: MethodError: no method matching group_same_things(::Asteroid, ::Spaceship)
-# Closest candidates are:
-#   group_same_things(::T<:Thing, ::T<:Thing) where T<:Thing at REPL[52]:2
+julia> group_same_things(a1, s1)
+ERROR: MethodError: no method matching group_same_things(::Asteroid, ::Spaceship)
+Closest candidates are:
+  group_same_things(::T<:Thing, ::T<:Thing) where T<:Thing at REPL[88]:2
+=#
 
 # ----------------------------------------------------------------------
 # Extracting type info

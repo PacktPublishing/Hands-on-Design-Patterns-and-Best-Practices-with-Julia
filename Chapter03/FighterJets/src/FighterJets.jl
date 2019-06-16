@@ -2,12 +2,13 @@ module FighterJets
 
 export FighterJet
 
+"FighterJet is a very faster vehicle with powerful weapons."
 mutable struct FighterJet
-    # power status: true = on, false = off
+    "power status: true = on, false = off"
     power::Bool 
-    # current direction in radians
+    "current direction in radians"
     direction::Float64
-    # current position coordinate (x,y)
+    "current position coordinate (x,y)"
     position::Tuple{Float64, Float64} 
 end
 
@@ -15,6 +16,7 @@ end
 import Vehicle: power_on!, power_off!, turn!, move!, position
 
 # Implementation of Vehicle interface
+
 function power_on!(fj::FighterJet)
     fj.power = true
     println("Powered on: ", fj)
