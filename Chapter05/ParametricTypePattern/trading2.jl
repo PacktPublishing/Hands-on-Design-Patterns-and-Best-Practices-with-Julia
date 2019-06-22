@@ -8,9 +8,8 @@ using Dates: Date
 abstract type Asset end
 abstract type Investment <: Asset end
 abstract type Equity <: Investment end
-abstract type Cash <: Asset end
 
-# ===== Equity Instruments Types ===== 
+# Equity Instruments Types 
 
 # Define concrete types 
 struct Stock <: Equity
@@ -28,7 +27,7 @@ struct StockOption <: Equity
     expiration::Date
 end
 
-# ===== Trading Types =====
+# Trading Types
 
 abstract type Trade end
 
@@ -42,23 +41,18 @@ struct SingleTrade{T <: Investment} <: Trade
     price::Float64
 end
 
-# Test
-stock = Stock("AAPL", "Apple Inc")
-option = StockOption("AAPLC", Call, 200, Date(2019, 12, 20))
-
 #= REPL
-julia> stock = Stock("AAPL", "Apple Inc")
-Stock("AAPL", "Apple Inc")
+julia> option = StockOption("AAPLC", Call, 200, Date(2019, 12, 20))
+StockOption("AAPLC", Call::CallPut = 0, 200.0, 2019-12-20)
 
 julia> SingleTrade(Long, stock, 100, 188.0)
 SingleTrade{Stock}(Long::LongShort = 0, Stock("AAPL", "Apple Inc"), 100, 188.0)
 
-julia> option = StockOption("AAPLC", Call, 200, Date(2019, 12, 20))
-StockOption("AAPLC", Call::CallPut = 0, 200.0, 2019-12-20)
+julia> SingleTrade(Long, option, 100, 3.5)
+SingleTrade{StockOption}(Long::LongShort = 0, StockOption("AAPLC", Call::CallPut = 0, 200.0, 2019-12-20), 100, 3.5)
+=#
 
-julia> SingleTrade(Long, option, 100, 188.0)
-SingleTrade{StockOption}(Long::LongShort = 0, StockOption("AAPLC", Call::CallPut = 0, 200.0, 2019-12-20), 100, 188.0)
-
+#=
 julia> SingleTrade{Stock} <: SingleTrade
 true
 
