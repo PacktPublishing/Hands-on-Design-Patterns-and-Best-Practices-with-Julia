@@ -1,4 +1,4 @@
-name = "CompositionExample"
+name = "DelegationPattern"
 uuid = "03117b61-9e61-518c-8c62-ec09d203ee1c"
 authors = ["Tom Kwong <tk3369@gmail.com>"]
 version = "0.1.0"

@@ -1,7 +1,3 @@
-export Account
-
-using Dates: Date
-
 # Object Definition
 mutable struct Account
     account_number::String

@@ -1,8 +1,7 @@
-# SavingsAccount is a kind of Account that generates interest daily.
-
-export SavingsAccount
-
-# We will use Composition pattern to gain existing Account functionality.
+"""
+`SavingsAccount` is a kind of `Account` that generates interest daily.
+We will use Delegation pattern to gain existing `Account` functionality.
+"""
 struct SavingsAccount
     acct::Account
     interest_rate::Float64

@@ -1,10 +1,7 @@
-# SavingsAccount2 is same as SavingsAccount but uses Lazy's @forward macro
-
-export SavingsAccount2
-
-using Lazy: @forward
-
-# We will use Composition pattern to gain existing Account functionality.
+"""
+`SavingsAccount2` is same as `SavingsAccount` but uses Lazy's `@forward` macro.
+We will use Delegation pattern to gain existing `Account` functionality.
+"""
 struct SavingsAccount2
     acct::Account
     interest_rate::Float64
