@@ -1,13 +1,10 @@
-name = "TraitsExample"
+name = "HolyTraitPattern"
 uuid = "3c430e0d-a18c-58cc-ab85-84e2354c90e1"
 authors = ["Tom Kwong <tk3369@gmail.com>"]
 version = "0.1.0"
 
 [deps]
-SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[targets]
-test = ["Test"]
