@@ -388,4 +388,17 @@ Expr
 
 julia> :( :( x = $($v) ) )
 :($(Expr(:quote, :(x = $(Expr(:$, 2))))))
+
+julia> :( :( x = $v ) ) |> dump
+Expr
+  head: Symbol quote
+  args: Array{Any}((1,))
+    1: Expr
+      head: Symbol =
+      args: Array{Any}((2,))
+        1: Symbol x
+        2: Expr
+          head: Symbol $
+          args: Array{Any}((1,))
+            1: Symbol v
 =#
