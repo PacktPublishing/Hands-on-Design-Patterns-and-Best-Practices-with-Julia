@@ -1,3 +1,6 @@
 **/*.icloud
 **/*.swp
-Old
+**/Old*/
+**/zzz*/
+**/.vscode/
+**/TODO.md

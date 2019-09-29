@@ -32,19 +32,16 @@ end
 # testing
 info_logger = Logger("/tmp/info.log", INFO)
 info!(info_logger, "hello", 123)
-info!(info_logger, "hello", 456)
-readlines("/tmp/info.log")
 
 #=
 julia> readlines("/tmp/info.log")
-2-element Array{String,1}:
+1-element Array{String,1}:
  "2019-09-07T22:22:46 [INFO]  hello 123"
- "2019-09-07T22:22:46 [INFO]  hello 456"
 =#
 
 error_logger = Logger("/tmp/error.log", ERROR)
 info!(error_logger, "hello", 123)
-readlines("/tmp/error.log")
+
 #=
 julia> readlines("/tmp/error.log")
 0-element Array{String,1}
