@@ -1,4 +1,5 @@
 # How a regular module may be written
+
 module WebCrawler
 
 using Dates
@@ -64,7 +65,7 @@ julia> current_sites()
  Target("http://cnn.com", false, nothing)  
  Target("http://yahoo.com", false, nothing)
 
-julia> crawl_sites()
+julia> crawl_sites!()
 Site http://cnn.com crawled.
 Site http://yahoo.com crawled.
 
@@ -125,7 +126,7 @@ end # let
 end # module
 
 
-# test
+# test access
 using Main.WebCrawler
 add_site!(Target(url = "http://cnn.com"));
 add_site!(Target(url = "http://yahoo.com"));
@@ -134,3 +135,36 @@ current_sites()
 crawl_sites!()
 current_sites()
 
+#=
+julia> using Main.WebCrawler
+
+julia> add_site!(Target(url = "http://cnn.com"));
+
+julia> add_site!(Target(url = "http://yahoo.com"));
+
+julia> current_sites()
+2-element Array{Target,1}:
+ Target("http://cnn.com", false, nothing)  
+ Target("http://yahoo.com", false, nothing)
+
+julia> crawl_sites!()
+Site http://cnn.com crawled.
+Site http://yahoo.com crawled.
+
+julia> current_sites()
+2-element Array{Target,1}:
+ Target("http://cnn.com", true, 2019-09-29T11:02:51.034)  
+ Target("http://yahoo.com", true, 2019-09-29T11:02:51.037)
+=#
+
+# test hidden variable/functions
+Main.WebCrawler.index_site!()
+Main.WebCrawler.sites
+
+#=
+julia> Main.WebCrawler.index_site!()
+ERROR: UndefVarError: index_site! not defined
+
+julia> Main.WebCrawler.sites
+ERROR: UndefVarError: sites not defined
+=#

@@ -112,14 +112,14 @@ function foo1()
     try
         foo2()
     catch
-        println("hanlding error gracefully")
+        println("handling error gracefully")
         pretty_print_stacktrace(stacktrace())
     end
 end
 
 #=
 julia> foo1()
-hanlding error gracefully
+handling error gracefully
 1 => foo1() at REPL[107]:6
 2 => top-level scope at none:0
 3 => eval(::Module, ::Any) at boot.jl:328
@@ -132,12 +132,14 @@ function foo1()
     try
         foo2()
     catch
+        println("handling error gracefully")
         pretty_print_stacktrace(stacktrace(catch_backtrace()))
     end
 end
 
 #=
 julia> foo1()
+handling error gracefully
 1 => foo3() at REPL[106]:2
 2 => foo2() at REPL[96]:2
 3 => foo1() at REPL[109]:3
