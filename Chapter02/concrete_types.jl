@@ -13,29 +13,29 @@ abstract type Apartment <: Property end
 abstract type FixedIncome <: Investment end
 abstract type Equity <: Investment end
 
-# Define immutable type
+# Define immutable/composite types
 struct Stock <: Equity
     symbol::String
     name::String
 end
 
-Stock("AAPL", "Apple, Inc.")  # US NASDAQ 
+# Create an instance
+stock = Stock("AAPL", "Apple, Inc.")
 
 #= REPL
-julia> Stock("AAPL", "Apple, Inc.")  # US NASDAQ
+julia> stock = Stock("AAPL", "Apple, Inc.")
 Stock("AAPL", "Apple, Inc.")
 =#
 
-# Create an instance
-s = Stock("AAPL", "Apple, Inc.")
+# implementing the contract from abstract type
+function describe(s::Stock)
+    return s.symbol * "(" * s.name * ")"
+end
 
 # It's immutable!
 #= REPL
-julia> s.symbol = "foo"
+julia> stock.name = "Apple LLC"
 ERROR: setfield! immutable struct of type Stock cannot be changed
-Stacktrace:
- [1] setproperty!(::Stock, ::Symbol, ::String) at ./sysimg.jl:19
- [2] top-level scope at none:0
 =#
 
 # Create another type
@@ -51,43 +51,42 @@ many_stocks = [
 ]
 
 # Create a basket of stocks
-bs = BasketOfStocks(many_stocks, "Anniversary gift for my wife")
+basket = BasketOfStocks(many_stocks, "Anniversary gift for my wife")
 
 #= REPL
-julia> bs = BasketOfStocks(many_stocks, "Anniversary gift for my wife")
+julia> many_stocks = [
+           Stock("AAPL", "Apple, Inc."),
+           Stock("IBM", "IBM")
+       ]
+2-element Array{Stock,1}:
+ Stock("AAPL", "Apple, Inc.")
+ Stock("IBM", "IBM")         
+
+julia> basket = BasketOfStocks(many_stocks, "Anniversary gift for my wife")
 BasketOfStocks(Stock[Stock("AAPL", "Apple, Inc."), Stock("IBM", "IBM")], "Anniversary gift for my wife")
 
-julia> pop!(bs.stocks)
+julia> pop!(basket.stocks)
 Stock("IBM", "IBM")
 
-julia> bs
+julia> basket
 BasketOfStocks(Stock[Stock("AAPL", "Apple, Inc.")], "Anniversary gift for my wife")
 =#
 
 # ----------------------------------------
 # mutable structs
 
-mutable struct StockHolding
-    stock::Stock
-    quantity::Int
+mutable struct Stock <: Equity
+    symbol::String
+    name::String
 end
 
-holding = StockHolding(Stock("AAPL", "Apple, Inc."), 100)
-holding.quantity += 200
-holding
-
 #= REPL
-julia> mutable struct StockHolding
-           stock::Stock
-           quantity::Int
-       end
+julia> stock = Stock("AAPL", "Apple, Inc.")
+StockHolding("AAPL", "Apple, Inc.")
 
-julia> holding = StockHolding(Stock("AAPL", "Apple, Inc."), 100)
-StockHolding(Stock("AAPL", "Apple, Inc."), 100)
+julia> stock.name = "Apple LLC"
+Apple LLC
 
-julia> holding.quantity += 200
-300
-
-julia> holding
-StockHolding(Stock("AAPL", "Apple, Inc."), 300)
+julia> stock
+Stock("AAPL", "Apple LLC")
 =#

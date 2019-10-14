@@ -17,56 +17,48 @@ abstract type Equity <: Investment end
 
 # concrete types
 
-"A `Stock` is identified by a trading `symbol` for a company `name`."
 struct Stock <: Equity
     symbol::String
     name::String
 end
 
+# new hierarchy
+
 abstract type Art end
 
-"A `Painting` is identified by the artist and title."
 struct Painting <: Art
     artist::String
     title::String
 end
 
-"""
-A `Holding` represents something we have with certain quantity.
-For example, 100 shares of Apple Inc. stocks, or 1 painting.
-"""
-struct Holding
-    thing::Union{Stock, Painting}
-    quantity::Int
+# union type
+
+struct BasketOfThings
+    things::Vector{Union{Painting,Stock}}
+    reason::String
 end
 
 #= REPL
-julia> aapl = Stock("AAPL", "Apple, Inc.")
+julia> stock = Stock("AAPL", "Apple, Inc.",)
 Stock("AAPL", "Apple, Inc.")
 
 julia> monalisa = Painting("Leonardo da Vinci", "Monalisa")
 Painting("Leonardo da Vinci", "Monalisa")
 
-julia> h1 = Holding(aapl, 100)
-Holding(Stock("AAPL", "Apple, Inc."), 100)
+julia> things = Union{Painting,Stock}[aapl, monalisa]
+2-element Array{Union{Painting, Stock},1}:
+ Stock("AAPL", "Apple, Inc.")        
+ Painting("Leonardo da Vinci", "Monalisa")
 
-julia> h2 = Holding(monalisa, 1)
-Holding(Painting("Leonardo da Vinci", "Monalisa"), 1)
-
-julia> my_holdings = [h1, h2]
-2-element Array{Holding,1}:
- Holding(Stock("AAPL", "Apple, Inc."), 100)           
- Holding(Painting("Leonardo da Vinci", "Monalisa"), 1)
+julia> present = BasketOfThings(things, "Anniversary gift for my wife")
+BasketOfThings(Union{Painting, Stock}[Stock("AAPL", "Apple, Inc."), Painting("Leonardo da Vinci", "Monalisa")], "Anniversary gift for my wife")
 =#
 
-const ValuableThing = Union{Stock, Painting}
+# easier to read :-)
 
-struct Holding
-    thing::ValuableThing
-    quantity::Int
+const Thing = Union{Painting,Stock}
+
+struct BasketOfThings
+    thing::Vector{Thing}
+    reason::String
 end
-
-#= REPL
-julia> h3 = Holding(Painting("Vincent Van Gogh", "Starry Night"), 1)
-Holding(Painting("Vincent Van Gogh", "Starry Night"), 1)
-=#

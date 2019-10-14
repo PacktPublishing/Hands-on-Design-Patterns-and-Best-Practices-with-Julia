@@ -32,5 +32,10 @@ Returns the location of the property as a tuple of (latitude, longitude).
 """
 function location(p::Property) end
 
-# Returns true if there's enough cash to buy the equity
-enough_cash_to_buy(a::Asset, c::Cash) = value(c) > value(e)
+# interaction function that works at the abstract type level
+function walking_disance(p1::Property, p2::Property)
+    loc1 = location(p1)
+    loc2 = location(p2)
+    return abs(loc1.x - loc2.x) + abs(loc1.y - loc2.y)
+end
+
