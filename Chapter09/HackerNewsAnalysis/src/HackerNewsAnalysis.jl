@@ -104,41 +104,16 @@ average_score3(n = 10) =
     logx("Average score = {}")
 
 # composing functions
-average_score3a(n = 10) =
-    (
-        logx("Average score", identity) ∘
-        calculate_average_score ∘
-        logx("Fetched story details") ∘
-        fetch_story_details ∘
-        logx("Limited number of stories", n) ∘
-        take(n)  ∘
-        logx("Numer of stories", length)  ∘
-        fetch_top_stories
-    )()
-
-# fusing
-
-# get top story details
-function top_story_details(n)
-    fetch_top_stories() |> 
-    take(10) |> 
-    fetch_story_details
-end
-
-# slow version
-function total_length_of_story_titles(stories)
-    stories |>
-    (stories -> [x.title for x in stories]) |>
-    (titles -> [length(x) for x in titles])
-end
-
-title(s::Story) = s.title
-
-# fast version (fused)
-function total_length_of_story_titles_fused(stories)
-    stories .|>
-    title .|>
-    length
-end
+# average_score3a(n = 10) =
+#     (
+#         logx("Average score", identity) ∘
+#         calculate_average_score ∘
+#         logx("Fetched story details") ∘
+#         fetch_story_details ∘
+#         logx("Limited number of stories", n) ∘
+#         take(n)  ∘
+#         logx("Numer of stories", length)  ∘
+#         fetch_top_stories
+#     )()
 
 end # module
