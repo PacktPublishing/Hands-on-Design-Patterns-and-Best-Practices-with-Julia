@@ -1,0 +1,16 @@
+name = "CreditApproval"
+uuid = "77ccfe20-dfcb-4b58-b51e-d8e148e73cf1"
+authors = ["Tom Kwong <tk3369@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+Mocking = "78c3b35d-d492-501b-9361-3d52fe80e533"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
