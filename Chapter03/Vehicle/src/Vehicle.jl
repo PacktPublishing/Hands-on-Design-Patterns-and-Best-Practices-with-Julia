@@ -8,7 +8,7 @@ export go!, land!
 # ------------------------------------------------------------------
 # 2. Interface documentation
 # ------------------------------------------------------------------
-# A vehicle must implement the following functions for vehicle `v`:
+# A vehicle (v) must implement the following functions:
 #
 # power_on!(v) - turn on the vehicle's engine
 # power_off!(v) - turn off the vehicle's engine
@@ -45,7 +45,7 @@ end
 # Space travel logic
 function go!(vehicle, destination) 
     power_on!(vehicle)
-    direction, distance = travel_path(vehicle, destination)
+    direction, distance = travel_path(position(vehicle), destination)
     turn!(vehicle, direction)
     move!(vehicle, distance)
     power_off!(vehicle)

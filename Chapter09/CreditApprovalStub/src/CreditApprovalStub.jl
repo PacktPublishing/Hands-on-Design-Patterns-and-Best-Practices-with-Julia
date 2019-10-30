@@ -5,7 +5,7 @@ export check_background, create_account, notify_downstream, open_account
 # Background check.  
 # In practice, we would call a remote service for this.
 # For this example, we just return true.
-function check_background(first_name, last_name, email)
+function check_background(first_name, last_name)
     println("Doing background check for $first_name $last_name")
     return true
 end
