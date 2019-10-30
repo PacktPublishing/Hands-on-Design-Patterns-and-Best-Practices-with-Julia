@@ -2,14 +2,18 @@ module FighterJets
 
 export FighterJet
 
-"FighterJet is a very faster vehicle with powerful weapons."
+"FighterJet is a very fast vehicle with powerful weapons."
 mutable struct FighterJet
+
     "power status: true = on, false = off"
     power::Bool 
+
     "current direction in radians"
     direction::Float64
+
     "current position coordinate (x,y)"
     position::Tuple{Float64, Float64} 
+
 end
 
 # Import generic functions
