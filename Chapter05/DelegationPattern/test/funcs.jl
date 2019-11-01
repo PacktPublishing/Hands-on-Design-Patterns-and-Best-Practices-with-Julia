@@ -1,5 +1,6 @@
 # Demo test functions
 using Dates: Date
+using Lazy
 
 # Account (child object)
 function test_account()
@@ -16,6 +17,7 @@ function test_account()
     @show transfer!(acct, dest, 10.00)
     @show acct
     @show dest
+
     return nothing
 end
 
