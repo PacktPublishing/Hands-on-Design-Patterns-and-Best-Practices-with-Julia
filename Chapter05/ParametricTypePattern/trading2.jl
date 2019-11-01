@@ -45,6 +45,9 @@ end
 julia> option = StockOption("AAPLC", Call, 200, Date(2019, 12, 20))
 StockOption("AAPLC", Call::CallPut = 0, 200.0, 2019-12-20)
 
+julia> stock = Stock("AAPL", "Apple, Inc.")
+Stock("AAPL", "Apple, Inc.")
+
 julia> SingleTrade(Long, stock, 100, 188.0)
 SingleTrade{Stock}(Long::LongShort = 0, Stock("AAPL", "Apple Inc"), 100, 188.0)
 
@@ -118,3 +121,4 @@ julia> pt = PairTrade(SingleTrade(Long, stock, 100, 188.0), SingleTrade(Short, o
 julia> payment(pt)
 18450.0
 =#
+
