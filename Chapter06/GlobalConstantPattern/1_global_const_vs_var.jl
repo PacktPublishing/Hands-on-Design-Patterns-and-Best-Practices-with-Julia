@@ -89,6 +89,7 @@ function add_using_global_variable_typed(x)
     return x + variable::Int
 end
 
+@btime add_using_global_variable_typed(10)
 #=
 julia> @btime add_using_global_variable_typed(10)
   5.213 ns (0 allocations: 0 bytes)
