@@ -1,6 +1,6 @@
 # define fib as anonymous function
 fib = n -> begin
-    println("called")
+    println("called with n = $n")
     return n < 3 ? 1 : fib(n-1) + fib(n-2)
 end
 
@@ -20,15 +20,16 @@ end
 
 # redefine fib function to take advantage of memo cache
 fib = memoize(fib)
+fib(6)
 
 #=
 julia> fib(6)
-called
-called
-called
-called
-called
-called
+called with n = 6
+called with n = 5
+called with n = 4
+called with n = 3
+called with n = 2
+called with n = 1
 8
 =#
 
@@ -41,11 +42,9 @@ julia> fib(5)
 =#
 
 #=
-julia> fib = n -> n < 3 ? 1 : fib(n-1) + fib(n-2)
-#8 (generic function with 1 method)
+julia> fib = n -> n < 3 ? 1 : fib(n-1) + fib(n-2);
 
-julia> fib = memoize(fib)
-#5 (generic function with 1 method)
+julia> fib = memoize(fib);
 
 julia> @btime fib(40)
   50.191 ns (0 allocations: 0 bytes)
