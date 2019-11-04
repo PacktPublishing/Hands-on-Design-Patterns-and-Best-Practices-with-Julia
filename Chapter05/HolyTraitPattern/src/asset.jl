@@ -61,6 +61,6 @@ marketprice(::IsIlliquid, x) = error("Price for illiquid asset $x is not availab
 
 # Sample pricing functions for Money and Stock
 marketprice(x::Money) = x.amount
-marketprice(x::Stock) = rand(4000:5000)
+marketprice(x::Stock) = rand(200:250)
 
 

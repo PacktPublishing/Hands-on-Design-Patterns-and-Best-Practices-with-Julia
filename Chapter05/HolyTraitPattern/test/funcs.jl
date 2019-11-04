@@ -43,7 +43,7 @@ marketprice(cash) = 100.0
 
 julia> trait_test_stock();
 tradable(aapl) = true
-marketprice(aapl) = 4295
+marketprice(aapl) = 235
 
 julia> trait_test_residence();
 tradable(home) = false
