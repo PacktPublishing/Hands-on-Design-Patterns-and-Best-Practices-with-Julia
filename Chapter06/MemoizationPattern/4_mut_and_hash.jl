@@ -1,11 +1,16 @@
-#
-#=
-julia> sum_abs = (x::AbstractVector{T} where {T <: Real}) -> begin
-           sleep(2)
-           sum(abs(v) for v in x)
-       end
-#23 (generic function with 1 method)
+# This is a slow implementation
+slow_sum_abs = (x::AbstractVector{T} where {T <: Real}) -> begin
+    sleep(2)
+    sum(abs(v) for v in x)
+end
 
+# test
+x = [1, -2, 3, -4, 5]
+sum_abs = memoize(slow_sum_abs)
+@time sum_abs(x)
+@time sum_abs(x)
+
+#=
 julia> x = [1, -2, 3, -4, 5]
 5-element Array{Int64,1}:
   1
@@ -26,6 +31,9 @@ julia> @time sum_abs(x)
 =#
 
 # CAUTION: What if the data is changed?
+push!(x, -6)
+@time sum_abs(x)
+
 #=
 julia> push!(x, -6)
 6-element Array{Int64,1}:
@@ -40,6 +48,31 @@ julia> @time sum_abs(x)
   0.000010 seconds (6 allocations: 192 bytes)
 15
 =#
+
+# Let's try again
+push!(x, 7)
+@time sum_abs(x)
+
+#=
+julia> push!(x, 7)
+7-element Array{Int64,1}:
+  1
+ -2
+  3
+ -4
+  5
+ -6
+  7
+
+julia> @time sum_abs(x)
+  2.004985 seconds (14 allocations: 368 bytes)
+28
+
+julia> @time sum_abs(x)
+  0.000032 seconds (6 allocations: 192 bytes)
+28
+=#
+
 
 # How to fix?  Let's create a hash function
 function hash_all_args(args, kwargs)
@@ -64,31 +97,31 @@ function memoize(f)
     end
 end
 
+# define sum_abs again to start refresh
+sum_abs = memoize(slow_sum_abs)
+
+x = [1, -2, 3, -4, 5];
+for i in 6:30
+    push!(x, i * (iseven(i) ? -1 : 1))
+    ts = @elapsed val = sum_abs(x)
+    println(i, ": ", x, " -> ", val, " (", round(ts, digits=1), "s)")
+    ts = @elapsed val = sum_abs(x)
+    println(i, ": ", x, " -> ", val, " (", round(ts, digits=1), "s)")
+end
+
 #=
+julia> sum_abs = memoize(slow_sum_abs);
+
 julia> x = [1, -2, 3, -4, 5];
 
-julia> @time sum_abs(x)
-  2.151430 seconds (135.56 k allocations: 6.614 MiB)
-15
-
-julia> @time sum_abs(x)
-  0.000004 seconds (4 allocations: 160 bytes)
-15
-
-julia> push!(x, 6)
-6-element Array{Int64,1}:
-  1
- -2
-  3
- -4
-  5
-  6
-
-julia> @time sum_abs(x)
-  2.001693 seconds (11 allocations: 384 bytes)
-21
-
-julia> @time sum_abs(x)
-  0.000005 seconds (4 allocations: 160 bytes)
-21
+6: [1, -2, 3, -4, 5, -6] -> 21 (2.0s)
+6: [1, -2, 3, -4, 5, -6] -> 21 (0.0s)
+7: [1, -2, 3, -4, 5, -6, 7] -> 28 (2.0s)
+7: [1, -2, 3, -4, 5, -6, 7] -> 28 (0.0s)
+8: [1, -2, 3, -4, 5, -6, 7, -8] -> 36 (2.0s)
+8: [1, -2, 3, -4, 5, -6, 7, -8] -> 36 (0.0s)
+9: [1, -2, 3, -4, 5, -6, 7, -8, 9] -> 45 (2.0s)
+9: [1, -2, 3, -4, 5, -6, 7, -8, 9] -> 45 (0.0s)
+10: [1, -2, 3, -4, 5, -6, 7, -8, 9, -10] -> 55 (2.0s)
+10: [1, -2, 3, -4, 5, -6, 7, -8, 9, -10] -> 55 (0.0s)
 =#
