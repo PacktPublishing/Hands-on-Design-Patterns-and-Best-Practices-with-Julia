@@ -1,16 +1,19 @@
 # Parsing expressions
+Meta.parse("x + y")
 #=
 julia> Meta.parse("x + y")
 :(x + y)
 =#
 
 # Expr type
+Meta.parse("x + y") |> typeof
 #=
 julia> Meta.parse("x + y") |> typeof
 Expr
 =#
 
 # Expr object dump
+Meta.parse("x + y") |> dump
 #=
 julia> Meta.parse("x + y") |> dump
 Expr
@@ -24,12 +27,14 @@ Expr
 # -----------------------------------------------------------------------------
 
 # Single variable
+Meta.parse("x") |> dump
 #=
 julia> Meta.parse("x") |> dump
 Symbol x
 =#
 
 # Function calls with keyword arguments
+Meta.parse("""open("/tmp/test.txt", read = true, write = true)""") |> dump
 #=
 julia> Meta.parse("""open("/tmp/test.txt", read = true, write = true)""") |> dump
 Expr
@@ -50,6 +55,7 @@ Expr
 =#
 
 # Nested functions
+Meta.parse("cos(sin(x+1))") |> dump
 #=
 julia> Meta.parse("cos(sin(x+1))") |> dump
 Expr
@@ -71,18 +77,22 @@ Expr
 # -----------------------------------------------------------------------------
 
 # constructing Expr manually
+Expr(:call, :+, :x, :y)
 #=
 julia> Expr(:call, :+, :x, :y)
 :(x + y)
 =#
 
 # nested one
+Expr(:call, :sin, Expr(:call, :+, :x, :y))
 #=
 julia> Expr(:call, :sin, Expr(:call, :+, :x, :y))
 :(sin(x + y))
 =#
 
 # using :() syntax
+ex = :(x + y)
+dump(ex)
 #=
 julia> ex = :(x + y)
 :(x + y)
@@ -97,6 +107,10 @@ Expr
 =#
 
 # quoted block
+:( begin
+        x = 1
+        y = 2
+   end )
 #=
 julia> :(begin
        x = 1
@@ -111,6 +125,10 @@ end
 =#
 
 # using quote block directly
+quote
+    x = 1
+    y = 2
+end
 #=
 julia> quote
            x = 1
@@ -128,6 +146,7 @@ end
 # more complex expression
 
 # Variable Assignment
+:(x = 1 + 1) |> dump
 #=
 julia> :(x = 1 + 1) |> dump
 Expr
@@ -143,6 +162,10 @@ Expr
 =#
 
 # Code Block
+:(begin
+        println("hello")
+        println("world")
+    end) |> dump
 #=
 julia> :(begin
            println("hello")
@@ -170,6 +193,11 @@ Expr
 =#
 
 # Conditional
+:(if 2 > 1
+        "good"
+    else
+        "bad"
+    end) |> dump
 #=
 julia> :(if 2 > 1
            "good"
@@ -202,6 +230,9 @@ Expr
 =#
 
 # Loop
+:(for i in 1:5
+        println("hello world")
+    end) |> dump
 #=
 julia> :(for i in 1:5
            println("hello world")
@@ -233,6 +264,9 @@ Expr
 =#
 
 # Function Definition
+:(function foo(x; y = 1)
+        return x + y
+    end) |> dump
 #=
 julia> :(function foo(x; y = 1)
            return x + y
@@ -273,6 +307,7 @@ Expr
 # -----------------------------------------------------------------------------
 
 # eval expressions
+eval(:(x = 1))
 #=
 julia> eval(:(x = 1))
 1
@@ -282,6 +317,9 @@ julia> x
 =#
 
 # eval from within a function
+function foo()
+    eval(:(y = 1))
+end
 #=
 julia> function foo()
            eval(:(y = 1))
@@ -295,6 +333,8 @@ julia> y
 =#
 
 # interpolation
+x = 2
+:(sqrt($x))
 #=
 julia> x = 2
 2
@@ -304,6 +344,10 @@ julia> :(sqrt($x))
 =#
 
 # splatting interpolation
+v = [1, 2, 3]
+quote
+    max($(v...))
+end
 #=
 julia> v = [1, 2, 3]
 3-element Array{Int64,1}:
@@ -321,6 +365,9 @@ end
 =#
 
 # incorrect splatting usage
+quote
+    max($v...)
+end
 #=
 julia> quote
            max($v...)
@@ -334,6 +381,7 @@ end
 # -----------------------------------------------------------------------------
 
 # what is QuoteNode
+:( x = :hello ) |> dump
 #=
 julia> :( x = :hello ) |> dump
 Expr
@@ -345,6 +393,7 @@ Expr
 =#
 
 # variable assignment
+:( x = hello ) |> dump
 #=
 julia> :( x = hello ) |> dump
 Expr
@@ -355,6 +404,8 @@ Expr
 =#
 
 # variable assignment (using interpolation)
+sym = :hello
+:( x = $sym)
 #=
 julia> sym = :hello
 :hello
@@ -364,6 +415,8 @@ julia> :( x = $sym)
 =#
 
 # using QuoteNode
+sym = QuoteNode(:hello)
+:( x = $sym)
 #=
 julia> sym = QuoteNode(:hello)
 :(:hello)
@@ -375,6 +428,7 @@ julia> :( x = $sym)
 # -----------------------------------------------------------------------------
 
 # interpolation into nested expression
+:( :( x = 1 ) ) |> dump
 #=
 julia> :( :( x = 1 ) ) |> dump
 Expr
@@ -388,7 +442,10 @@ Expr
 
 julia> :( :( x = $($v) ) )
 :($(Expr(:quote, :(x = $(Expr(:$, 2))))))
+=#
 
+:( :( x = $v ) ) |> dump
+#=
 julia> :( :( x = $v ) ) |> dump
 Expr
   head: Symbol quote
