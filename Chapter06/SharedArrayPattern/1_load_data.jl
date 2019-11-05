@@ -108,7 +108,7 @@ load_data!(nfiles, valuation);
 
 # It took about 3 minutes to load data 100,000 files
 #=
-julia> @time process(nfiles, valuation);
+julia> @time load_data!(nfiles, valuation);
 180.975685 seconds (1.49 M allocations: 76.647 MiB, 0.01% gc time)
 =#
 
