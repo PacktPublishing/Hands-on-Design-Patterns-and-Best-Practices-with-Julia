@@ -1,4 +1,4 @@
-# Calculator.jl - functions
+# funcs.jl - common calculation functions
 
 export interest, rate, mortgage
 
