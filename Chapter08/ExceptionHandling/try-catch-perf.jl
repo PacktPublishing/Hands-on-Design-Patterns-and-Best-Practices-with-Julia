@@ -1,41 +1,52 @@
-function mysqrt1!(xs)
+function sum_of_sqrt1(xs)
+    total = zero(eltype(xs))
     for i in eachindex(xs)
-        xs[i] = sqrt(xs[i])
+        total += sqrt(xs[i])
     end
+    return total
 end
 
-function mysqrt2!(xs)
+function sum_of_sqrt2(xs)
+    total = zero(eltype(xs))
     for i in eachindex(xs)
         try
-            xs[i] = sqrt(xs[i])
-        catch ex
-            nothing
+            total += sqrt(xs[i])
+        catch
+            # ignore error intentionally
         end
     end
+    return total
 end
 
 using BenchmarkTools
 
+x = rand(100_000)
+@btime sum_of_sqrt1($x);
+@btime sum_of_sqrt2($x);
+
 #=
-julia> x = rand(100000)
+julia> x = rand(100_000);
 
-julia> @btime mysqrt1!(copy($x))
-  547.331 μs (2 allocations: 781.33 KiB)
+julia> @btime sum_of_sqrt1($x);
+  482.818 μs (0 allocations: 0 bytes)
 
-julia> @btime mysqrt2!(copy($x))
-  2.921 ms (2 allocations: 781.33 KiB)
+julia> @btime sum_of_sqrt2($x);
+  2.455 ms (0 allocations: 0 bytes)
 =#
 
-function mysqrt3!(xs)
+function sum_of_sqrt3(xs)
+    total = zero(eltype(xs))
     for i in eachindex(xs)
         if xs[i] >= 0.0
-            xs[i] = sqrt(xs[i])
+            total += sqrt(xs[i])
         end
     end
+    return total
 end
 
+@btime sum_of_sqrt3($x);
 #=
-julia> @btime mysqrt3!(copy($x))
+julia> @btime sum_of_sqrt3($x);
   545.789 μs (2 allocations: 781.33 KiB)
 =#
 
