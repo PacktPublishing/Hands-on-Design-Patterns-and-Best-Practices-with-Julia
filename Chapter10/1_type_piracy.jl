@@ -1,3 +1,15 @@
+# A motivating example
+module Football
+    # My own array-like type
+    struct Scores <: AbstractVector{Float64}
+        values::Vector{Float64}
+    end
+
+    # implement AbstractArray interface
+    Base.size(s::Scores) = (length(s.values),)
+    Base.getindex(s::Scores, i::Int) = s.values[i]
+end
+
 #--- Type 1: Redefining an existing function from a different package 
 #            to different logic!
 
