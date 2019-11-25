@@ -54,8 +54,10 @@ LState(model::LModel) = LState(model, 1, model.axiom)
 function next(state::LState)
     new_result = []
     for el in state.result
-        next_el = get(state.model.rules, el, el)
-        push!.(Ref(new_result), next_el)
+        # Look up `el` from the rules dictionary and append to `new_result`.
+        # Just default to the element itself when it is not found
+        next_elements = get(state.model.rules, el, el)
+        append!(new_result, next_elements)
     end
     return LState(state.model, state.current_iteration + 1, new_result)
 end
