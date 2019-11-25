@@ -81,7 +81,7 @@ function Base.getproperty(fc::FileContent, s::Symbol)
         return getfield(fc, s)
     end
     if s === :contents
-        !getfield(fc, :loaded) && load_contents!(fc)
+        getfield(fc, :loaded) || load_contents!(fc)
         return getfield(fc, :contents)
     end
     error("Unsupported property: $s")
