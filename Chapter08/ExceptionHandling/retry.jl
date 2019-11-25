@@ -10,6 +10,9 @@ function do_something(name::AbstractString)
     end
 end
 
+do_something("John")
+do_something("John")
+
 #= lucky day
 julia> do_something("John")
 2019-09-26T21:41:37.617 Let's do it
@@ -36,6 +39,8 @@ function do_something_more_robustly(name::AbstractString;
         end
     end
 end
+
+do_something_more_robustly("John")
 
 #= recovering nicely
 julia> do_something_more_robustly("John")
@@ -78,32 +83,3 @@ julia> retry(do_something, delays=ExponentialBackOff(; n = 10))("John")
 2019-09-29T00:39:33.791 Let's do it
 2019-09-29T00:39:43.797 Let's do it
 =#
-
-#  ExponentialBackOff(; n=1, first_delay=0.05, max_delay=10.0, factor=5.0, jitter=0.1)
-
-
-# # retry only a specific exception was raised
-# # retry(do_something, delays=Iterators.repeated(2.0), 
-# #         check = (state, exception) ->)("John")
-# function my_file_watcher(fn, filename)
-#     check_frequency = Iterators.repeated(15)
-#     check_file(filename) = if isfile(filename) 
-#         return true
-#     else
-#         println(now(), " file has not arrived $filename")
-#         error("file not found")
-#     end
-#     retry(check_file, delays = check_frequency)(filename)
-#     fn(filename)
-# end
-# my_file_watcher(lstat, "/tmp/xyz")
-
-# # A guard returns a boolean if it's OK to pass
-# function process(f, args...
-#         ; guard = () -> true, check_freq_seconds = 1)
-#     guard_fn() = guard() || error("waiting...") 
-#     retry(guard_fn, delays=Iterators.repeated(check_freq_seconds))()
-#     f(args...)
-# end
-# filename = "/tmp/xyz"
-# process(lstat, filename; guard = () -> isfile(filename))
