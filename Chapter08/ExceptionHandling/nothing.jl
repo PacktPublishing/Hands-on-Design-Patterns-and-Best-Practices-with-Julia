@@ -8,7 +8,7 @@ Nothing
 =#
 
 # multiple matches scenario
-
+url = "http://google.com"
 if match(r"\.com$", url) !== nothing
     # do something about .com sites
 else if match(r"\.org$", url) !== nothing
@@ -18,7 +18,7 @@ else
 end
 
 # hypothetically, what would we do if `match` uses exception instead?
-
+url = "http://google.com"
 try 
     match(r"\.com$", url)
     # do something about .com sites
