@@ -19,8 +19,7 @@ function sum_of_sqrt2(xs)
 end
 
 using BenchmarkTools
-
-x = rand(100_000)
+x = rand(100_000);
 @btime sum_of_sqrt1($x);
 @btime sum_of_sqrt2($x);
 
