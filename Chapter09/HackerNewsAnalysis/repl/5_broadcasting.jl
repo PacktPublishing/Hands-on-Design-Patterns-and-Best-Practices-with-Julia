@@ -8,6 +8,7 @@ add1v(x) = x .+ 1
 mul2v(x) = x .* 2
 add1mul2(xs) = xs .|> add1 .|> mul2
 
+using BenchmarkTools
 xs = collect(1:10000);
 @btime add1mul2v($xs);
 @btime add1mul2($xs);

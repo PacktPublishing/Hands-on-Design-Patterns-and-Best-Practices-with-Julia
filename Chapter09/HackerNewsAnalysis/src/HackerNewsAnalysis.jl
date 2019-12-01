@@ -1,6 +1,6 @@
 module HackerNewsAnalysis
 
-export fetch_top_stories, fetch_story, fetch_story_details, take
+export fetch_top_stories, fetch_story, fetch_story_details, take, logx
 export Story
 
 export average_score
@@ -103,17 +103,12 @@ average_score3(n = 10) =
     calculate_average_score                     |> 
     logx("Average score = {}")
 
-# composing functions
-# average_score3a(n = 10) =
-#     (
-#         logx("Average score", identity) ∘
-#         calculate_average_score ∘
-#         logx("Fetched story details") ∘
-#         fetch_story_details ∘
-#         logx("Limited number of stories", n) ∘
-#         take(n)  ∘
-#         logx("Numer of stories", length)  ∘
-#         fetch_top_stories
-#     )()
+# conditional logic
+check_hotness(n = 10) =
+    average_score3(n) |> hotness |> celebrate
+
+hotness(score) = score > 100 ? Val(:high) : Val(:low)
+celebrate(v::Val{:high}) = logx("Woohoo! Lots of hot topics!")(v)
+celebrate(v::Val{:low}) = logx("It's just a normal day...")(v)
 
 end # module
