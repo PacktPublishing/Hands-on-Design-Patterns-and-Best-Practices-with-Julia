@@ -4,8 +4,6 @@ using Test
 using Mocking
 Mocking.activate()
 
-# using ExpectationStubs
-
 @testset "Stubs" begin
 
 # 1. setup patches
@@ -41,9 +39,9 @@ apply(check_background_success_patch) do
 end
 
 # apply two stubs
-apply([check_background_success_patch, create_account_patch]) do
-    @test open_account("peter", "doe", "pdoe@julia-is-awesome.com") == :success
-end
+# apply([check_background_success_patch, create_account_patch]) do
+#     @test open_account("peter", "doe", "pdoe@julia-is-awesome.com") == :success
+# end
 
 end # testset
 
@@ -96,35 +94,7 @@ let check_background_call_count = 0,
 
     # 4. verify our previous expectation
     verify()
-end
+end #let
 
-# # --------------------------------------------------------------------------------
-# @testset "Mocking and ExpectationStubs" begin
+end #testset
 
-# # 1. setup
-# notify_downstream_patch = 
-#     @patch function notify_downstream(account_number)
-#         println("notify downstream mock is called")
-#         return nothing
-#     end
-
-# # 2. Establish expectations
-
-# # set it up as a stub
-# @stub notify_downstream_patch
-
-# # we expect account number 1 to be passed from the original create_account function
-# @expect notify_downstream_patch(1) = nothing
-
-# # 3. exercise
-# apply(notify_downstream_patch) do
-#     @test open_account("peter", "doe", "pdoe@julia-is-awesome.com") == :success
-# end
-
-# # 4. verify
-# @test all_expectations_used(notify_downstream_patch)
-# @test @usecount(notify_downstream_patch(::Int)) == 1
-
-# end
-
-end
