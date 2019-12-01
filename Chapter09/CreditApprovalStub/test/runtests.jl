@@ -1,7 +1,7 @@
 using CreditApprovalStub
 using Test
 
-@testset "CreditApproval.jl" begin
+@testset "CreditApprovalStub.jl" begin
 
 # stubs
 check_background_success(first_name, last_name) = true
