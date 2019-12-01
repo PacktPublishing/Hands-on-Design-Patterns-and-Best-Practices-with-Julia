@@ -75,6 +75,7 @@ function process_command(::Val{:close}, filename)
     println("closing file $filename")
 end
 
+process_command(Val(:open), "julia.pdf")
 #=
 julia> process_command(Val(:open), "julia.pdf")
 opening file julia.pdf
@@ -85,6 +86,8 @@ function process_command(command::String, args...)
     process_command(Val(Symbol(command)), args...)
 end
 
+process_command("open", "julia.pdf")
+process_command("close", "julia.pdf")
 #=
 julia> process_command("open", "julia.pdf")
 opening file julia.pdf
@@ -95,6 +98,11 @@ closing file julia.pdf
 
 # -----------------------------------------------
 
+ntuple(i -> 2i, 10)
+
+using BenchmarkTools
+@btime ntuple(i->2i, 10);
+@btime ntuple(i->2i, 11);
 #=
 julia> ntuple(i -> 2i, 10)
 (2, 4, 6, 8, 10, 12, 14, 16, 18, 20)
@@ -106,6 +114,9 @@ julia> @btime ntuple(i->2i, 11);
   812.209 ns (4 allocations: 336 bytes)
 =#
 
+@btime ntuple(i->2i, Val(10));
+@btime ntuple(i->2i, Val(11));
+@btime ntuple(i->2i, Val(100));
 #= singleton type
 julia> @btime ntuple(i->2i, Val(10));
   0.032 ns (0 allocations: 0 bytes)
@@ -161,7 +172,7 @@ ntuple(f, ::Val{3}) = (@_inline_meta; (f(1), f(2), f(3)))
     end
 end
 
-# let's understand what's going on here
+# Optional: let's understand what's going on here
 
 using Base.Cartesian
 @nexprs 3 i -> t_i = i
