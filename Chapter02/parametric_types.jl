@@ -65,6 +65,8 @@ mutable struct CashHolding{P} <: Holding{P}
 end
 
 #= REPL
+julia> stock = Stock("AAPL", "Apple, Inc.");
+
 julia> certificate_in_the_safe = StockHolding3(stock, 100, 180.00, 18000.00)
 StockHolding3{Int64,Float64}(Stock("AAPL", "Apple, Inc."), 100, 180.0, 18000.0)
 
