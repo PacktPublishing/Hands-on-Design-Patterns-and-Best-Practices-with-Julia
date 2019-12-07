@@ -75,6 +75,8 @@ BasketOfStocks(Stock[Stock("AAPL", "Apple, Inc.")], "Anniversary gift for my wif
 # ----------------------------------------
 # mutable structs
 
+# NOTE: restart REPL so we can define Stock again
+
 mutable struct Stock <: Equity
     symbol::String
     name::String
