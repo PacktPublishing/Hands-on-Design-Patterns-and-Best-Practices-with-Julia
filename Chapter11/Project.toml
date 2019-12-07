@@ -1,6 +1,0 @@
-[deps]
-CircularList = "e1d4a2be-69cc-597c-a2ea-cc5d6f241fff"
-Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-Formatting = "59287772-0a20-5a39-b81b-1366585eb4c0"
-Memoize = "c03570c3-d221-55d1-a50c-7939bbd78826"
-ModuleLogger = "247fc82d-8a48-4c99-91f9-777a8789624c"
