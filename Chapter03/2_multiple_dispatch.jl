@@ -136,6 +136,7 @@ end
 
 collide(a1, s1);
 collide(s1, a1);
+collide(a1, a2);
 
 #= REPL
 julia> collide(a1, s1);
@@ -166,6 +167,16 @@ Checking collision of asteroid vs. asteroid
 # ----------------------------------------------------------------------
 # detecting ambiguity
 
+using Test
+
+module Foo
+    foo(x, y) = 1
+    foo(x::Integer, y) = 2
+    foo(x, y::Integer) = 3
+end
+
+detect_ambiguities(Main.Foo)
+
 #= REPL
 julia> using Test
 
@@ -182,6 +193,15 @@ julia> detect_ambiguities(Main.Foo)
 =#
 
 # -- fixed 
+module Foo
+    foo(x, y) = 1
+    foo(x::Integer, y) = 2
+    foo(x, y::Integer) = 3
+    foo(x::Integer, y::Integer) = 4
+end
+
+detect_ambiguities(Main.Foo)
+
 
 #=
 julia> module Foo
@@ -197,6 +217,18 @@ julia> detect_ambiguities(Main.Foo)
 =#
 
 # -- multiple modules
+module Foo2
+    foo(x, y) = 1
+    foo(x::Integer, y) = 2
+    foo(x, y::Integer) = 3
+end
+
+module Foo4
+    import Main.Foo2
+    Foo2.foo(x::Integer, y::Integer) = 4
+end
+
+detect_ambiguities(Main.Foo2, Main.Foo4)
 
 #=
 julia> module Foo2
@@ -226,6 +258,8 @@ function check_randomly(things)
         collide(two...)
     end
 end
+
+check_randomly([s1, s2, a1, a2])
 
 #= REPL
 julia> check_randomly([s1, s2, a1, a2])

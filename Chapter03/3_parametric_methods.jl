@@ -178,6 +178,10 @@ eltype([s1, s2])
 eltype([a1, a2])
 eltype([s1, s2, a1, a2])
 
+typeof([s1, s2])
+typeof([a1, a2])
+typeof([s1, s2, a1, a2])
+
 # julia> eltype([s1, s2])
 # Spaceship
 

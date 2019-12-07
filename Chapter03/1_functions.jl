@@ -370,6 +370,7 @@ end
 
 # open/close house keeping 
 function process_file(func::Function, filename::AbstractString)
+    ios = nothing
     try
         ios = open(filename)
         func(ios)
