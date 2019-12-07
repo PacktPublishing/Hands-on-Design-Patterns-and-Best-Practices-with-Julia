@@ -45,9 +45,9 @@ Stock("AAPL", "Apple, Inc.")
 julia> monalisa = Painting("Leonardo da Vinci", "Monalisa")
 Painting("Leonardo da Vinci", "Monalisa")
 
-julia> things = Union{Painting,Stock}[aapl, monalisa]
+julia> things = Union{Painting,Stock}[stock, monalisa]
 2-element Array{Union{Painting, Stock},1}:
- Stock("AAPL", "Apple, Inc.")        
+ Stock("AAPL", "Apple, Inc.")             
  Painting("Leonardo da Vinci", "Monalisa")
 
 julia> present = BasketOfThings(things, "Anniversary gift for my wife")
