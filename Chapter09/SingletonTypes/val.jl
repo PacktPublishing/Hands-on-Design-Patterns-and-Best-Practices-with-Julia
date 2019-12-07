@@ -96,6 +96,32 @@ julia> process_command("close", "julia.pdf")
 closing file julia.pdf
 =#
 
+# Let's build your own parametric type 
+# A parametric type that represents a specific command
+struct Command{T} end
+
+# Constructor function to create a new Command instance from a string
+Command(s::AbstractString) = Command{Symbol(s)}()
+
+# Dispatcher function
+function process_command(command::String, args...)
+    process_command(Command(command), args...)
+end
+
+# Actions
+function process_command(::Command{:open}, filename) 
+    println("opening file $filename")
+end
+
+function process_command(::Command{:close}, filename) 
+    println("closing file $filename")
+end
+
+# Test
+process_command("open", "julia.pdf")
+process_command("close", "julia.pdf")
+
+
 # -----------------------------------------------
 
 ntuple(i -> 2i, 10)
