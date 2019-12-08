@@ -6,7 +6,7 @@ end
 
 # test
 x = [1, -2, 3, -4, 5]
-sum_abs = memoize(slow_sum_abs)
+sum_abs = memoize(slow_sum_abs);
 @time sum_abs(x)
 @time sum_abs(x)
 

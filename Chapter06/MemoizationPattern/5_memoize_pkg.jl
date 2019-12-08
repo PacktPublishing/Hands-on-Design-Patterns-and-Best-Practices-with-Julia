@@ -1,3 +1,10 @@
+using Memoize
+
+@memoize fib(n) = n < 3 ? 1 : fib(n-1) + fib(n-2);
+@time fib(40)
+@time fib(40)
+@time fib(39)
+
 #=
 julia> using Memoize
 
@@ -17,7 +24,20 @@ julia> @time fib(39)
 63245986
 =#
 
-#= Caching.jl
+# Caching.jl
+
+using Caching, CSV, DataFrames
+
+@cache function read_csv(filename::AbstractString)
+    println("Reading file: ", filename)
+    @time df = CSV.File(filename) |> DataFrame
+    return df
+end
+
+df = read_csv("Film_Permits.csv");
+
+
+#=
 julia> using Caching, CSV, DataFrames
 
 julia> @cache function read_csv(filename::AbstractString)

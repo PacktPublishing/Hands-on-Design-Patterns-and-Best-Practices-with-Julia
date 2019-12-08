@@ -37,8 +37,12 @@ called with n = 1
 julia> fib(6)
 8
 
-julia> fib(5)
-5
+julia> fib(10)
+called with n = 10
+called with n = 9
+called with n = 8
+called with n = 7
+55
 =#
 
 #=
@@ -51,6 +55,10 @@ julia> @btime fib(40)
 102334155
 =#
 
-# What to do with generic functions?
-# let's use a wrapper
+# What if it's not an anonymous function?
 
+#=
+julia> fib(n) = n < 3 ? 1 : fib(n-1) + fib(n-2);
+
+fib = memoize(fib)
+=#

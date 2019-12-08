@@ -24,8 +24,12 @@ slow_op = (a, b = 2; c = 3, d) -> begin
     a + b + c + d
 end
 
-slow_op = memoize(slow_op)
+op = memoize(slow_op);
 
+@time op(2, d = 5);
+@time op(2, d = 5);
+@time op(1, c = 4, d = 5);
+@time op(1, c = 4, d = 5);
 #=
 julia> @time op(2, d = 5);
   2.006106 seconds (22 allocations: 864 bytes)
