@@ -41,12 +41,16 @@ struct SingleTrade{T <: Investment} <: Trade
     price::Float64
 end
 
+stock = Stock("AAPL", "Apple Inc")
+option = StockOption("AAPLC", Call, 200, Date(2019, 12, 20))
+SingleTrade(Long, stock, 100, 188.0)
+SingleTrade(Long, option, 100, 3.5)
 #= REPL
+julia> stock = Stock("AAPL", "Apple Inc")
+Stock("AAPL", "Apple Inc")
+
 julia> option = StockOption("AAPLC", Call, 200, Date(2019, 12, 20))
 StockOption("AAPLC", Call::CallPut = 0, 200.0, 2019-12-20)
-
-julia> stock = Stock("AAPL", "Apple, Inc.")
-Stock("AAPL", "Apple, Inc.")
 
 julia> SingleTrade(Long, stock, 100, 188.0)
 SingleTrade{Stock}(Long::LongShort = 0, Stock("AAPL", "Apple Inc"), 100, 188.0)
@@ -55,6 +59,8 @@ julia> SingleTrade(Long, option, 100, 3.5)
 SingleTrade{StockOption}(Long::LongShort = 0, StockOption("AAPLC", Call::CallPut = 0, 200.0, 2019-12-20), 100, 3.5)
 =#
 
+SingleTrade{Stock} <: SingleTrade
+SingleTrade{StockOption} <: SingleTrade
 #=
 julia> SingleTrade{Stock} <: SingleTrade
 true
@@ -77,6 +83,8 @@ function payment(t::SingleTrade{T}) where {T}
     return sign(t) * t.quantity * t.price
 end
 
+SingleTrade(Long, stock, 100, 188.0) |> payment
+SingleTrade(Long, option, 1, 3.50) |> payment
 #= REPL
 julia> SingleTrade(Long, stock, 100, 188.0) |> payment
 18800.0
@@ -90,6 +98,8 @@ function payment(t::SingleTrade{StockOption})
     return sign(t) * t.quantity * 100 * t.price
 end
 
+SingleTrade(Long, stock, 100, 188.0) |> payment
+SingleTrade(Long, option, 1, 3.50) |> payment
 #= REPL
 julia> SingleTrade(Long, stock, 100, 188.0) |> payment
 18800.0
@@ -109,6 +119,10 @@ end
 
 payment(t::PairTrade) = payment(t.leg1) + payment(t.leg2)
 
+stock
+option
+pt = PairTrade(SingleTrade(Long, stock, 100, 188.0), SingleTrade(Short, option, 1, 3.5));
+payment(pt)
 #= REPL
 julia> stock
 Stock("AAPL", "Apple Inc")
