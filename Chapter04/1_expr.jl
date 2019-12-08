@@ -265,8 +265,8 @@ Expr
 
 # Function Definition
 :(function foo(x; y = 1)
-        return x + y
-    end) |> dump
+      return x + y
+  end) |> dump
 #=
 julia> :(function foo(x; y = 1)
            return x + y

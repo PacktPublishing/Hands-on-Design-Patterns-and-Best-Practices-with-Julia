@@ -1,4 +1,5 @@
 # Example 1
+using Dates
 
 # @time macro
 #=

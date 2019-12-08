@@ -1,12 +1,26 @@
-# double
+# double a number, the macro way!
 #=
-julia> macro doubled(ex)
-           return :( 2 * $(esc(ex)))
-       end
+macro doubled(ex)
+    return :( 2 * $(esc(ex)))
+end
 =#
 
+# This code does not work.  Don't try it.
+#=
+macro doubled(ex)
+    if typeof(ex) isa AbstractFloat
+        return :( double_super_duper($(esc(ex))) )
+    else
+        return :( 2 * $(esc(ex)))
+    end
+end
+=#
 
 # generated function
+@generated function doubled(x)
+    return :( 2 * x )
+end
+doubled(2)
 #=
 julia> @generated function doubled(x)
            return :( 2 * x )
@@ -14,18 +28,18 @@ julia> @generated function doubled(x)
 
 julia> doubled(2)
 4
-
-julia> x = 3.0
-3.0
-
-julia> doubled(x)
-6.0
 =#
 
 # -----------------------------------------------------------------------------
 # generated function arguments
 
 # debug
+@generated function doubled(x)
+    @show x
+    return :( 2 * x )
+end
+doubled(2)
+doubled(2)
 #=
 julia> @generated function doubled(x)
            @show x
@@ -35,7 +49,10 @@ julia> @generated function doubled(x)
 julia> doubled(2)
 x = Int64
 4
+=#
 
+doubled(3.0)
+#=
 julia> doubled(3.0)
 x = Float64
 6.0

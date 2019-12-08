@@ -241,6 +241,8 @@ macro compose_twice(ex)
     ex.args[2] = me
     return ex
 end
+@compose_twice(sin(1)) == sin(sin(1))
+
 #=
 julia> macro compose_twice(ex)
            @assert ex.head == :call
@@ -313,6 +315,8 @@ end
 
 # -----------------------------------------------------------------------------
 # non standard string literal
+
+using DataFrames
 
 # regex
 #=
