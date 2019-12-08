@@ -23,6 +23,9 @@ function std_by_security(valuation)
 end
 
 # does it work properly?
+
+result = std_by_security(valuation);
+result[1:5, :]
 #=
 julia> result = std_by_security(valuation);
 
@@ -36,6 +39,8 @@ julia> result[1:5, :]
 =#
 
 # performance check: ~5s
+
+@benchmark std_by_security($valuation) seconds=30
 #=
 julia> @benchmark std_by_security($valuation) seconds=30
 BenchmarkTools.Trial:
@@ -69,6 +74,7 @@ function std_by_security2(valuation)
     return result
 end
 
+@benchmark std_by_security2($valuation) seconds=30
 #=
 julia> result = std_by_security2(valuation);
 

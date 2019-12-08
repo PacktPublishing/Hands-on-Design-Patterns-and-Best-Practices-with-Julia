@@ -18,6 +18,8 @@ function stats_by_security(valuation, funcs)
     return result
 end
 
+funcs = (std, skewness, kurtosis);
+@time result = stats_by_security(valuation, funcs);
 #=
 julia> funcs = (std, skewness, kurtosis);
 
@@ -43,6 +45,7 @@ function stats_by_security2(valuation, funcs)
     return result
 end
 
+@time result = stats_by_security2(valuation, funcs);
 #=
 julia> @time result = stats_by_security2(valuation, funcs);
   2.351749 seconds (4.89 k allocations: 234.469 KiB)

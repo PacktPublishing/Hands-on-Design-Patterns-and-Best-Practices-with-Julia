@@ -26,9 +26,9 @@ function locate_file(index)
     joinpath(dir, "sec$(id).dat")
 end
 
-function make_data_directories()
+function make_data_directories(folder)
     for i in 0:99 
-        mkdir("$i") 
+        mkpath(joinpath(folder, string(i)))
     end
 end
 
@@ -42,8 +42,11 @@ function generate_test_data(nfiles)
     end
 end
 
-make_data_directories()
-@time generate_test_data(100_000)
+# put test data in a separate directory
+folder = joinpath(ENV["HOME"], "julia_book_ch06_data")
+make_data_directories(folder)
+cd(folder)
+generate_test_data(100_000)
 
 # data directory
 #=
@@ -100,11 +103,14 @@ function load_data!(nfiles, dest)
     end
 end
 
-nfiles  = 100_000
-nstates = 10_000
-nattr   = 3
-valuation = SharedArray{Float64}(nstates, nattr, nfiles)
-load_data!(nfiles, valuation);
+# main program
+@everywhere cd(joinpath(ENV["HOME"], "julia_book_ch06_data"))
+nfiles  = 100_000;
+nstates = 10_000;
+nattr   = 3;
+valuation = SharedArray{Float64}(nstates, nattr, nfiles);
+
+@time load_data!(nfiles, valuation);
 
 # It took about 3 minutes to load data 100,000 files
 #=
