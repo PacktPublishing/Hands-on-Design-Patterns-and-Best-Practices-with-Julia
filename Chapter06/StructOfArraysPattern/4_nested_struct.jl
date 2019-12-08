@@ -44,6 +44,7 @@ function read_trip_payment_file(file)
 end
 
 records = read_trip_payment_file("yellow_tripdata_2018-12_100k.csv");
+records[1]
 #=
 julia> records = read_trip_payment_file("yellow_tripdata_2018-12_100k.csv");
 
@@ -51,6 +52,8 @@ julia> records[1]
 TripPayment(1, "2018-12-01 00:28:22", "2018-12-01 00:44:07", 2, 2.5, Fare(12.0, 0.5, 0.5, 3.95, 0.0, 0.3, 17.25))
 =#
 
+sa = StructArray(records);
+sa.fare.fare_amount
 # Doesn't work if we play the same trick as before
 #=
 julia> sa = StructArray(records);
@@ -60,6 +63,8 @@ ERROR: type Array has no field fare_amount
 =#
 
 # How?
+sa = StructArray(records, unwrap = t -> t <: Fare);
+sa.fare.fare_amount
 #=
 julia> sa = StructArray(records, unwrap = t -> t <: Fare);
 
@@ -74,6 +79,7 @@ julia> sa.fare.fare_amount
 =#
 
 # It has good performance as expected
+@btime mean(sa.fare.fare_amount)
 #=
 julia> @btime mean(sa.fare.fare_amount)
   27.198 μs (1 allocation: 16 bytes)

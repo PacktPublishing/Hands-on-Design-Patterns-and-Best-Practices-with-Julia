@@ -31,6 +31,7 @@ columar_records = TripPaymentColumnarData(
     [r.total_amount for r in records]
 );
 
+@btime mean(columar_records.fare_amount);
 #=
 julia> @btime mean(columar_records.fare_amount);
   27.170 μs (1 allocation: 16 bytes)

@@ -38,7 +38,6 @@ function read_trip_payment_file(file)
     return records
 end
 
-# read data file
 records = read_trip_payment_file("yellow_tripdata_2018-12_100k.csv")
 
 #=
