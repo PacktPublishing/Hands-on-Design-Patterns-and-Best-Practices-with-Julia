@@ -60,14 +60,9 @@ A    762.940 MiB 10000×10000 SharedArray{Float64,2}
 
 # Check system again
 #=
-$ df -h
-Filesystem      Size  Used Avail Use% Mounted on
-devtmpfs         16G     0   16G   0% /dev
-tmpfs            16G  763M   15G   5% /dev/shm
-tmpfs            16G  448K   16G   1% /run
-tmpfs            16G     0   16G   0% /sys/fs/cgroup
-/dev/nvme0n1p1   50G   30G   21G  59% /
-tmpfs           3.1G     0  3.1G   0% /run/user/1000
+$ df -h | egrep '(Used|shm)'                                                                                                
+Filesystem      Size  Used Avail Use% Mounted on                                                                            
+shmfs            16G  763M   16G   5% /dev/shm
 =#
 
 # ----------------------------------------------------------------------
@@ -75,12 +70,7 @@ tmpfs           3.1G     0  3.1G   0% /run/user/1000
 #=
 $ sudo mount -t tmpfs shmfs -o size=28g /dev/shm
 
-$ df -h
+$ df -h | egrep '(Used|shm)'
 Filesystem      Size  Used Avail Use% Mounted on
-devtmpfs         16G     0   16G   0% /dev
 shmfs            28G     0   28G   0% /dev/shm
-tmpfs            16G  416K   16G   1% /run
-tmpfs            16G     0   16G   0% /sys/fs/cgroup
-/dev/nvme0n1p1   50G   29G   22G  58% /
-tmpfs           3.1G     0  3.1G   0% /run/user/1000
 =#

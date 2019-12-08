@@ -2,6 +2,15 @@
 # Using immutable types
 # ----------------------------------------------------------------
 
+using SharedArrays
+
+@everywhere struct Point{T <: Real}
+    x::T
+    y::T
+end
+A = SharedArray{Point{Float64}}(3);
+A .= [Point(rand(), rand()) for in in 1:length(A)]
+
 #=
 julia> @everywhere struct Point{T <: Real}
            x::T
@@ -17,9 +26,16 @@ julia> A .= [Point(rand(), rand()) for in in 1:length(A)]
  Point{Float64}(0.10800356384806586, 0.24558257669174854)
 =#
 
+
 # ----------------------------------------------------------------
 # Non-bits types (such as mutable struct) are not supported
 # ----------------------------------------------------------------
+
+@everywhere mutable struct MutablePoint{T <: Real}
+    x::T
+    y::T
+end
+B = SharedArray{MutablePoint{Float64}}(3);
 
 #=
 julia> @everywhere mutable struct MutablePoint{T <: Real}
