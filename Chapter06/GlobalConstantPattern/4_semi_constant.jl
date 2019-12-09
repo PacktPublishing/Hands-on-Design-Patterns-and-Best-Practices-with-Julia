@@ -14,6 +14,7 @@ function add_using_global_semi_constant(x)
     return x + semi_constant[]
 end
 
+@btime add_using_global_semi_constant(10);
 #= performance
 julia> @btime add_using_global_semi_constant(10);
   2.097 ns (0 allocations: 0 bytes)
@@ -21,16 +22,13 @@ julia> @btime add_using_global_semi_constant(10);
 
 # how to set Ref object value
 semi_constant[] = 20
-
-# compare to previous results, it's still pretty bad
-# as compared to global constant but hey, it's not that 
-# bad compared to global variable.
+semi_constant
 #=
-julia> @btime add_using_global_variable(10);
-  25.572 ns (0 allocations: 0 bytes)
+julia> semi_constant[] = 20
+20
 
-  julia> @btime add_using_global_constant(10);
-  0.030 ns (0 allocations: 0 bytes)
+julia> semi_constant
+Base.RefValue{Int64}(20)
 =#
 
 # Option #2.  

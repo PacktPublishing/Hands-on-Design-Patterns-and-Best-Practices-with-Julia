@@ -15,6 +15,10 @@ CodeInfo(
 ) => Int64
 =#
 
+# ------------------------------------------------------------
+# Optional content below
+# ------------------------------------------------------------
+
 # Constant propagation
 const constant_a = 1
 function constant_propagation_example()

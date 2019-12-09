@@ -22,13 +22,13 @@ function add_using_function_arg(x, y)
     return x + y
 end
 
-@btime add_using_function_arg(10, 10)
-
+@btime add_using_function_arg(10, 10);
 #=
 julia> @btime add_using_function_arg(10, 10)
   0.030 ns (0 allocations: 0 bytes)
 =#
 
+@code_llvm add_using_function_arg(10, 10)
 #=
 julia> @code_llvm add_using_function_arg(10, 10)
 
@@ -40,7 +40,10 @@ top:
 ; └
   ret i64 %2
 }
+=#
 
+@code_llvm add_using_global_variable(10)
+#=
 julia> @code_llvm add_using_global_variable(10)
 
 ;  @ REPL[156]:2 within `add_using_global_variable'
@@ -83,29 +86,6 @@ top:
 }
 =#
 
-# ------------------------------------------------------------------
-
-function add_using_global_variable_typed(x)
-    return x + variable::Int
-end
-
-@btime add_using_global_variable_typed(10)
-#=
-julia> @btime add_using_global_variable_typed(10)
-  5.213 ns (0 allocations: 0 bytes)
-=#
-
-#= what if the variable got assigned to a value with different type?
-julia> variable = 10.0
-10.0
-
-julia> add_using_global_variable_typed(10)
-ERROR: TypeError: in typeassert, expected Int64, got Float64
-=#
-
-
-# ------------------------------------------------------------------
-
 const constant = 10
 function add_using_global_constant(x)
     return constant + x
@@ -117,6 +97,7 @@ julia> @btime add_using_global_constant(10);
   0.030 ns (0 allocations: 0 bytes)
 =#
 
+@code_llvm add_using_global_constant(10)
 #=
 julia> @code_llvm add_using_global_constant(10)
 
@@ -139,3 +120,25 @@ variable::Int = 10
 julia> variable::Int = 10
 ERROR: syntax: type declarations on global variables are not yet supported
 =#
+
+function add_using_global_variable_typed(x)
+    return x + variable::Int
+end
+
+variable = 10
+@btime add_using_global_variable_typed(10);
+#=
+julia> @btime add_using_global_variable_typed(10)
+  5.213 ns (0 allocations: 0 bytes)
+=#
+
+variable = 10.0
+add_using_global_variable_typed(10)
+#= what if the variable got assigned to a value with different type?
+julia> variable = 10.0
+10.0
+
+julia> add_using_global_variable_typed(10)
+ERROR: TypeError: in typeassert, expected Int64, got Float64
+=#
+
