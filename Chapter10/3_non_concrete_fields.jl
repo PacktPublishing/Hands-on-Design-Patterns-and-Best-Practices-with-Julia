@@ -16,6 +16,10 @@ struct Point3
     y::UInt8
 end
 
+Point3(0x01, 0x01) |> sizeof
+Point(0x01, 0x01) |> sizeof
+Point(Int128(1), Int128(1)) |> sizeof
+
 #=
 julia> Point3(0x01, 0x01) |> sizeof
 2
@@ -33,6 +37,7 @@ struct Point4
     y::Int128
 end
 
+Point4(Int128(1), Int128(1)) |> sizeof
 #=
 julia> Point4(Int128(1), Int128(1)) |> sizeof
 32

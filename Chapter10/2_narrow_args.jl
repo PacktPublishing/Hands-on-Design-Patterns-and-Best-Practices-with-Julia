@@ -55,6 +55,12 @@ sumprod_2 #4 failure (method not selected)
 sumprod_2 #5 success
 =#
 
+Vector{Float64} <: Vector{Number}
+#=
+julia> Vector{Float64} <: Vector{Number}
+false
+=#
+
 test_sumprod(sumprod_3)
 #=
 julia> test_sumprod(sumprod_3)
@@ -94,6 +100,11 @@ sumprod_6 #3 success
 sumprod_6 #4 success
 sumprod_6 #5 success
 =#
+
+using SparseArrays
+A = sparse([1,10,100], [1,10,100], [1,2,3])
+B = sparse([1,10,100], [1,10,100], [4,5,6])
+sumprod_6(A, B)
 
 test_sumprod(sumprod_7)
 #=
