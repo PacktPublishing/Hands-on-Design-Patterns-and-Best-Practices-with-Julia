@@ -50,6 +50,8 @@ Base.@kwdef struct TextStyle
 end
 
 # Two constructors are available
+
+methods(TextStyle)
 #=
 julia> methods(TextStyle)
 # 2 methods for generic function "(::Type)":
@@ -58,6 +60,12 @@ julia> methods(TextStyle)
 =#
 
 # sample usage
+
+style = TextStyle(
+           alignment = "left",
+           font_family = "Arial",
+           font_weight = "Bold",
+           font_size = 11)
 #=
 julia> style = TextStyle(
            alignment = "left",
@@ -65,4 +73,19 @@ julia> style = TextStyle(
            font_weight = "Bold",
            font_size = 11)
 TextStyle("Arial", 11, "Bold", "black", "white", "left", 0)
+=#
+
+# What if missing mandatory arguments?
+#=
+julia> TextStyle()
+ERROR: UndefKeywordError: keyword argument font_family not assigned
+Stacktrace:
+ [1] TextStyle() at ./util.jl:722
+ [2] top-level scope at REPL[8]:1
+
+julia> TextStyle(font_family = "Arial")
+ERROR: UndefKeywordError: keyword argument font_size not assigned
+Stacktrace:
+ [1] (::Core.var"#kw#Type")(::NamedTuple{(:font_family,),Tuple{String}}, ::Type{TextStyle}) at ./none:0
+ [2] top-level scope at REPL[9]:1
 =#

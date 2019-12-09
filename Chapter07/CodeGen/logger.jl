@@ -33,6 +33,7 @@ end
 info_logger = Logger("/tmp/info.log", INFO)
 info!(info_logger, "hello", 123)
 
+readlines("/tmp/info.log")
 #=
 julia> readlines("/tmp/info.log")
 1-element Array{String,1}:
@@ -42,6 +43,7 @@ julia> readlines("/tmp/info.log")
 error_logger = Logger("/tmp/error.log", ERROR)
 info!(error_logger, "hello", 123)
 
+readlines("/tmp/error.log")
 #=
 julia> readlines("/tmp/error.log")
 0-element Array{String,1}
@@ -106,9 +108,30 @@ error!(error_logger,   "hello", 123)
 readlines("/tmp/info.log")
 readlines("/tmp/warning.log")
 readlines("/tmp/error.log")
+#=
+julia> readlines("/tmp/info.log")
+3-element Array{String,1}:
+ "2019-12-08T17:03:28 [INFO]  hello 123"   
+ "2019-12-08T17:03:28 [WARNING]  hello 123"
+ "2019-12-08T17:03:28 [ERROR]  hello 123"  
+
+julia> readlines("/tmp/warning.log")
+2-element Array{String,1}:
+ "2019-12-08T17:03:29 [WARNING]  hello 123"
+ "2019-12-08T17:03:29 [ERROR]  hello 123"  
+
+julia> readlines("/tmp/error.log")
+1-element Array{String,1}:
+ "2019-12-08T17:03:30 [ERROR]  hello 123"
+=#
 
 # debugging - https://github.com/timholy/CodeTracking.jl
 
+methods(error!)
+methods(error!) |> first
+
+using Revise, CodeTracking
+methods(error!) |> first |> definition
 #=
 julia> methods(error!)
 # 1 method for generic function "error!":
@@ -117,31 +140,37 @@ julia> methods(error!)
 julia> methods(error!) |> first
 error!(logger::Logger, args...) in Main at REPL[70]:8
 
-julia> using CodeTracking
+julia> using Revise, CodeTracking
 
 julia> methods(error!) |> first |> definition
 :(function error!(logger::Logger, args...)
-      #= REPL[70]:8 =#
+      #= REPL[24]:8 =#
       if logger.level <= ERROR
-          #= REPL[70]:9 =#
+          #= REPL[24]:9 =#
           let io = logger.handle
-              #= REPL[70]:10 =#
+              #= REPL[24]:10 =#
               print(io, trunc(now(), Dates.Second), " [ERROR] ")
-              #= REPL[70]:11 =#
+              #= REPL[24]:11 =#
               for (idx, arg) = enumerate(args)
-                  #= REPL[70]:12 =#
+                  #= REPL[24]:12 =#
                   idx > 0 && print(io, " ")
-                  #= REPL[70]:13 =#
+                  #= REPL[24]:13 =#
                   print(io, arg)
               end
-              #= REPL[70]:15 =#
+              #= REPL[24]:15 =#
               println(io)
-              #= REPL[70]:16 =#
+              #= REPL[24]:16 =#
               flush(io)
           end
       end
   end)
+=#
 
+# MacroTools.prewalk
+
+using MacroTools
+MacroTools.prewalk(rmlines, definition(first(methods(error!))))
+#=
 julia> using MacroTools
 
 julia> MacroTools.prewalk(rmlines, definition(first(methods(error!))))
@@ -158,7 +187,13 @@ julia> MacroTools.prewalk(rmlines, definition(first(methods(error!))))
           end
       end
   end)
+=#
 
+# using Lazy and chain with rmlines
+
+using Lazy
+@>> methods(error!) first definition MacroTools.prewalk(rmlines)
+#= 
 using Lazy
 
 julia> @>> methods(error!) first definition MacroTools.prewalk(rmlines)
