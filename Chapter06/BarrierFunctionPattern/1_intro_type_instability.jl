@@ -6,15 +6,20 @@ using BenchmarkTools
 # this function is not type stable
 random_data(n) = isodd(n) ? rand(Int, n) : rand(Float64, n)
 
+@code_warntype random_data(3)
 #=
 julia> @code_warntype random_data(3)
+Variables
+  #self#::Core.Compiler.Const(random_data, false)
+  n::Int64
+
 Body::Union{Array{Float64,1}, Array{Int64,1}}
-1 ── %1  = (Base.checked_srem_int)(n, 2)::Int64
-│    %2  = (%1 === 0)::Bool
-│    %3  = (Base.not_int)(%2)::Bool
-└───       goto #3 if not %3
-2 ── %5  = Random.GLOBAL_RNG::Random.MersenneTwister
-...
+1 ─ %1 = Main.isodd(n)::Bool
+└──      goto #3 if not %1
+2 ─ %3 = Main.rand(Main.Int, n)::Array{Int64,1}
+└──      return %3
+3 ─ %5 = Main.rand(Main.Float64, n)::Array{Float64,1}
+└──      return %5
 =#
 
 function double_sum_of_random_data(n)
@@ -26,25 +31,49 @@ function double_sum_of_random_data(n)
     return total
 end
 
+@btime double_sum_of_random_data(100000);
+@btime double_sum_of_random_data(100001);
 #=
 julia> @btime double_sum_of_random_data(100000);
-  346.047 μs (2 allocations: 781.33 KiB)
+  347.050 μs (2 allocations: 781.33 KiB)
 
 julia> @btime double_sum_of_random_data(100001);
-  345.016 μs (2 allocations: 781.39 KiB)
+  179.623 μs (2 allocations: 781.39 KiB)
 =#
 
 # See how may red marks with Union types?
+
+@code_warntype double_sum_of_random_data(100000);
 #=
 julia> @code_warntype double_sum_of_random_data(100000);
+Variables
+  #self#::Core.Compiler.Const(double_sum_of_random_data, false)
+  n::Int64
+  data::Union{Array{Float64,1}, Array{Int64,1}}
+  total::Union{Float64, Int64}
+  @_5::Union{Nothing, Tuple{Union{Float64, Int64},Int64}}
+  v::Union{Float64, Int64}
+
 Body::Union{Float64, Int64}
-1 ── %1   = invoke Main.random_data(_2::Int64)::Union{Array{Float64,1}, Array{Int64,1}}
-│    %2   = (isa)(%1, Array{Float64,1})::Bool
-└───        goto #7 if not %2
-...
-│    %15  = φ (#3 => %11)::Union{Float64, Int64}
-...
-│    %32  = φ (#9 => %28)::Union{Float64, Int64}
-...
+1 ─       (data = Main.random_data(n))
+│         (total = 0)
+│   %3  = data::Union{Array{Float64,1}, Array{Int64,1}}
+│         (@_5 = Base.iterate(%3))
+│   %5  = (@_5 === nothing)::Bool
+│   %6  = Base.not_int(%5)::Bool
+└──       goto #4 if not %6
+2 ┄ %8  = @_5::Tuple{Union{Float64, Int64},Int64}::Tuple{Union{Float64, Int64},Int64}
+│         (v = Core.getfield(%8, 1))
+│   %10 = Core.getfield(%8, 2)::Int64
+│   %11 = total::Union{Float64, Int64}
+│   %12 = (2 * v)::Union{Float64, Int64}
+│         (total = %11 + %12)
+│         (@_5 = Base.iterate(%3, %10))
+│   %15 = (@_5 === nothing)::Bool
+│   %16 = Base.not_int(%15)::Bool
+└──       goto #4 if not %16
+3 ─       goto #2
+4 ┄       return total
+
 =#
 
