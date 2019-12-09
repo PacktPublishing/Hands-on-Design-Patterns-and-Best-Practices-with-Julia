@@ -1,4 +1,7 @@
 # introducing the matchin function
+
+match(r"\.com$", "google.com") |> typeof
+match(r"\.com$", "w3.org") |> typeof
 #=
 julia> match(r"\.com$", "google.com") |> typeof
 RegexMatch

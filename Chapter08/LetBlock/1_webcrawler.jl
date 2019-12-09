@@ -44,7 +44,6 @@ end
 
 end # module
 
-# test
 using Main.WebCrawler
 add_site!(Target(url = "http://cnn.com"));
 add_site!(Target(url = "http://yahoo.com"));

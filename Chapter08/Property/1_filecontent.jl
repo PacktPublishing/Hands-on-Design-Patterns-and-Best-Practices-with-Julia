@@ -22,6 +22,11 @@ end
 
 # quick test
 
+fc = FileContent("/etc/hosts")
+fc.loaded
+load_contents!(fc)
+fc.loaded
+fc.contents
 #= 
 julia> fc = FileContent("/etc/hosts")
 FileContent("/etc/hosts", false, UInt8[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  …  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
@@ -44,6 +49,8 @@ julia> fc.contents
 # how does the compiler work with the dot notation?
 
 # reference
+
+Meta.lower(Main, :( fc.path ))
 #=
 julia> Meta.lower(Main, :( fc.path ))
 :($(Expr(:thunk, CodeInfo(
@@ -54,6 +61,8 @@ julia> Meta.lower(Main, :( fc.path ))
 =#
 
 # assignment
+
+Meta.lower(Main, :( fc.path = "/etc/hosts"))
 #=
 julia> Meta.lower(Main, :( fc.path = "/etc/hosts"))
 :($(Expr(:thunk, CodeInfo(
@@ -99,6 +108,11 @@ end
 fc = FileContent("/etc/hosts")
 
 # test
+
+fc = FileContent("/etc/hosts")
+fc.path
+fc.contents
+fc.loaded
 #=
 julia> fc = FileContent("/etc/hosts")
 FileContent("/etc/hosts", false, UInt8[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00  …  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
@@ -129,6 +143,9 @@ function Base.setproperty!(fc::FileContent, s::Symbol, value)
     error("Property $s cannot be changed.")
 end
 
+fc.path
+fc.path = "/etc/profile"
+fc.contents = []
 #=
 julia> fc.path = "/etc/profile"
 Object re-initialized for /etc/profile (size 189)

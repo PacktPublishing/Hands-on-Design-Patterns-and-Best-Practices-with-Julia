@@ -10,6 +10,7 @@ function foo3()
     throw(ErrorException("bad things happened"))
 end
 
+foo1()
 #=
 julia> foo1()
 ERROR: bad things happened
@@ -36,6 +37,7 @@ function foo1()
     end
 end
 
+foo1()
 #=
 julia> foo1()
 handling error gracefully
@@ -56,6 +58,7 @@ function foo1()
     end
 end
 
+foo1()
 #=
 julia> foo1()
 handling error gracefully

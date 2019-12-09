@@ -71,6 +71,7 @@ ERROR: 2019-09-28T13:57:01.836 Too bad 😦
 =#
 
 # ExponentialBackOff
+retry(do_something, delays=ExponentialBackOff(; n = 10))("John")
 #=
 julia> retry(do_something, delays=ExponentialBackOff(; n = 10))("John")
 2019-09-29T00:38:54.428 Let's do it
