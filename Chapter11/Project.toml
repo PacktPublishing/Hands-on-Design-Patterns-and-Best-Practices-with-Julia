@@ -1,0 +1,9 @@
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+CircularList = "e1d4a2be-69cc-597c-a2ea-cc5d6f241fff"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Formatting = "59287772-0a20-5a39-b81b-1366585eb4c0"
+GLM = "38e38edf-8417-5370-95a0-9cbb8c7f171a"
+Lazy = "50d2b5c4-7a5e-59d5-8109-a42b560f39c0"
+Memoize = "c03570c3-d221-55d1-a50c-7939bbd78826"
+RDatasets = "ce6b1742-4840-55fa-b093-852dadbb1d8b"
