@@ -16,8 +16,8 @@ function sample_customers()
     a2 = Account(2, 200.0)
     c1 = Customer("John Doe", a1, a2)
     
-    a3 = Account(1, 300.0)
-    a4 = Account(2, 400.0)
+    a3 = Account(3, 300.0)
+    a4 = Account(4, 400.0)
     c2 = Customer("Brandon King", a1, a2)
 
     return [c1, c2]
