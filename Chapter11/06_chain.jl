@@ -13,16 +13,16 @@ mutable struct DepositRequest
     amount::Float64
 end
 
-@enum Status Continue Handled
+@enum Status CONTINUE HANDLED
 
 """
 Apply handlers.  Stop the chain when a handler
-return `Handled`.
+return `HANDLED`.
 """
 function apply(req::DepositRequest, handlers::AbstractVector{Function})
     for f in handlers
         status = f(req)
-        status == Handled && return nothing
+        status == HANDLED && return nothing
     end
 end
 
@@ -30,18 +30,18 @@ end
 
 function update_account_handler(req::DepositRequest) 
     println("Deposited $(req.amount) to account $(req.id)")
-    return Continue
+    return CONTINUE
 end
 
 function send_gift_handler(req::DepositRequest)
     req.amount > 100_000 && 
         println("=> Thank you for your business")
-    return Continue
+    return CONTINUE
 end
 
 function notify_customer(req::DepositRequest)
     println("deposit is finished")
-    return Handled
+    return HANDLED
 end
 
 handlers = [
