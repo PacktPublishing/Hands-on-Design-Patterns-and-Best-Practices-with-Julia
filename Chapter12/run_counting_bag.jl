@@ -15,6 +15,6 @@ supported = ["Bag1", "Bag2"]
 superclass in supported || usage("Please specify either Bag1 or Bag2")
 
 # Compile
-run(`cp -whatever $(superclass).java Bag.java`)
+run(`cp $(superclass).java Bag.java`)
 run(`javac Bag.java CountingBag.java`)
 run(`java CountingBag`)
