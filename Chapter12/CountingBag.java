@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class CountingBag extends Bag
 {
     int count = 0;
