@@ -64,7 +64,7 @@ using RDatasets, GLM
 using .MLPipeline
 
 # Using original template
-boston = dataset("MASS", "boston");
+boston = dataset("MASS", "Boston");
 result, rmse = MLPipeline.run(boston, :MedV, [:Rm, :Tax, :Crim]);
 println(rmse)
 
