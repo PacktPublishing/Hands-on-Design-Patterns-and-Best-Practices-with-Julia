@@ -46,19 +46,24 @@ function add(chassis::Chassis)
     end
 end
 
-car = Car() |>
-    add(Engine("4-cylinder 1600cc Engine")) |>
-    add(Wheels("4x 20-inch wide wheels")) |>
-    add(Chassis("Roadster Chassis"))
+function test1()
+    car = Car() |>
+        add(Engine("4-cylinder 1600cc Engine")) |>
+        add(Wheels("4x 20-inch wide wheels")) |>
+        add(Chassis("Roadster Chassis"))
+    println(car)
+end
 
-println(car)
-
-car = Car()
-car.engine = Engine("4-cylinder 1600cc Engine")
-car.wheels = Wheels("4x 20-inch wide wheels")
-car.chassis = Chassis("Roadster Chassis")
+function test2()
+    car = Car()
+    car.engine = Engine("4-cylinder 1600cc Engine")
+    car.wheels = Wheels("4x 20-inch wide wheels")
+    car.chassis = Chassis("Roadster Chassis")
+    println(car)
+end
 
 end #module
 
 using .BuilderExample
-BuilderExample.test()
+BuilderExample.test1()
+BuilderExample.test2()
