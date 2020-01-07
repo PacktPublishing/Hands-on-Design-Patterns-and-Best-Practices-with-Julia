@@ -1,3 +1,4 @@
+# run Julia REPL with: JULIA_NUM_THREADS=4 julia
 module SingletonExample
 
 export AppKey
@@ -55,6 +56,7 @@ constructing AppKey("myapp", 0x3e3f51b5fecc028c1007b8e182fa2d74)
 
 # How do we ensure a single construction???
 
+# run Julia REPL with: JULIA_NUM_THREADS=4 julia
 module SingletonExample2
 
 export AppKey
