@@ -2,21 +2,21 @@ abstract type Vertebrate end
 abstract type Mammal <: Vertebrate end
 abstract type Reptile <: Vertebrate end
 
-struct 🐱 <: Mammal 
+struct Cat <: Mammal 
     name
 end
 
-struct 🐶 <: Mammal
+struct Dog <: Mammal
     name
 end
 
-struct 🐊 <: Reptile 
+struct Crocodile <: Reptile 
     name
 end
 
-Base.show(io::IO, cat::🐱) = print(io, "🐱 ", cat.name)
-Base.show(io::IO, dog::🐶) = print(io, "🐶 ", dog.name)
-Base.show(io::IO, croc::🐊) = print(io, "🐊 ", croc.name)
+Base.show(io::IO, cat::Cat) = print(io, "Cat ", cat.name)
+Base.show(io::IO, dog::Dog) = print(io, "Dog ", dog.name)
+Base.show(io::IO, croc::Crocodile) = print(io, "Crocodile ", croc.name)
 
 # adopt new pet
 function adopt(m::Mammal)
@@ -26,48 +26,49 @@ end
 
 # quick test about Liskov substitution principle
 
-adopt(🐱("Felix"));
-adopt(🐶("Clifford"));
+adopt(Cat("Felix"));
+adopt(Dog("Clifford"));
 #=
-julia> adopt(🐱("Felix"))
-"🐱 Felix is now adopted."
+julia> adopt(Cat("Felix"))
+"Cat Felix is now adopted."
 
-julia> adopt(🐶("Clifford"))
-"🐶 Clifford is now adopted."
+julia> adopt(Dog("Clifford"))
+"Dog Clifford is now adopted."
 =#
 
-adopt(🐊("Solomon"));
+adopt(Crocodile("Solomon"));
 #=
-julia> adopt(🐊("Solomon"))
-ERROR: MethodError: no method matching adopt(::🐊)
+julia> adopt(Crocodile("Solomon"))
+ERROR: MethodError: no method matching adopt(::Crocodile)
 Closest candidates are:
   adopt(::Mammal) at REPL[9]:2
 =#
 
-# Covariant?  Does 🐱 <: Mammal imply Array{🐱} <: Array{Mammal}?
+# Covariant?  Does Cat <: Mammal imply Array{Cat} <: Array{Mammal}?
 adopt(ms::Array{Mammal,1}) = "adopted " * string(ms)
 
+adopt([Cat("Felix"), Cat("Garfield")])
 #=
-julia> adopt([🐱("Felix"), 🐱("Garfield")])
-ERROR: MethodError: no method matching adopt(::Array{🐱,1})
+julia> adopt([Cat("Felix"), Cat("Garfield")])
+ERROR: MethodError: no method matching adopt(::Array{Cat,1})
 Closest candidates are:
   adopt(::Array{Mammal,1}) at REPL[48]:1
   adopt(::Mammal) at REPL[33]:3
 =#
 
-adopt(Mammal[🐱("Felix"), 🐱("Garfield")])
+adopt(Mammal[Cat("Felix"), Cat("Garfield")])
 #=
-julia> adopt(Mammal[🐱("Felix"), 🐱("Garfield")])
-"adopted Mammal[🐱 Felix, 🐱 Garfield]"
+julia> adopt(Mammal[Cat("Felix"), Cat("Garfield")])
+"adopted Mammal[Cat Felix, Cat Garfield]"
 =#
 
 
 # The answer is no.  
 # But this this works because an Array{Mammal} was passed.
-adopt([🐱("Felix"), 🐶("Clifford")])
+adopt([Cat("Felix"), Dog("Clifford")])
 #=
-julia> adopt([🐱("Felix"), 🐶("Clifford")])
-"accepted Mammal[🐱 Felix, 🐶 Clifford]"
+julia> adopt([Cat("Felix"), Dog("Clifford")])
+"accepted Mammal[Cat Felix, Dog Clifford]"
 =#
 
 # That's because Array{Mammal} is an array of pointers since
@@ -76,9 +77,9 @@ julia> adopt([🐱("Felix"), 🐶("Clifford")])
 # What we should have done?
 
 # homongeneous array of objects with the same concrete type
-adopt(ms::Array{T,1}) where {T <: Mammal} = "accepted same kind:" * string(ms)
-
-methods(adopt)
+function adopt(ms::Array{T,1}) where {T <: Mammal}
+    return "accepted same kind:" * string(ms)
+end
 #=
 julia> methods(adopt)
 # 3 methods for generic function "adopt":
@@ -87,19 +88,19 @@ julia> methods(adopt)
 [3] adopt(ms::Array{T,1}) where T<:Mammal in Main at REPL[26]:1
 =#
 
-adopt([🐱("Felix"), 🐱("Garfield")])
-adopt([🐶("Clifford"), 🐶("Astro")])
-adopt([🐱("Felix"), 🐶("Clifford")])
+adopt([Cat("Felix"), Cat("Garfield")])
+adopt([Dog("Clifford"), Dog("Astro")])
+adopt([Cat("Felix"), Dog("Clifford")])
 
 #=
-julia> adopt([🐱("Felix"), 🐱("Garfield")])
-"accepted 🐱[🐱 Felix, 🐱 Garfield]"
+julia> adopt([Cat("Felix"), Cat("Garfield")])
+"accepted Cat[Cat Felix, Cat Garfield]"
 
-julia> adopt([🐶 ("Clifford"), 🐶 ("Astro")])
-"accepted 🐶 [🐶  Clifford, 🐶  Astro]"
+julia> adopt([Dog ("Clifford"), Dog ("Astro")])
+"accepted Dog [Dog  Clifford, Dog  Astro]"
 
-julia> adopt([🐱("Felix"), 🐶 ("Clifford")])
-"accepted Mammal[🐱 Felix, 🐶  Clifford]"
+julia> adopt([Cat("Felix"), Dog ("Clifford")])
+"accepted Mammal[Cat Felix, Dog  Clifford]"
 =#
 
 # This is great because the functional behavior of adoption 
@@ -110,18 +111,28 @@ julia> adopt([🐱("Felix"), 🐶 ("Clifford")])
 
 friend(m::Mammal, f::Mammal) = "$m and $f become friends."
 
+Tuple{Cat,Cat} <: Tuple{Mammal,Mammal}
+Tuple{Cat,Dog} <: Tuple{Mammal,Mammal}
+Tuple{Dog,Cat} <: Tuple{Mammal,Mammal}
+Tuple{Dog,Dog} <: Tuple{Mammal,Mammal}
 #=
-julia> Tuple{🐱,🐱} <: Tuple{Mammal,Mammal}
+julia> Tuple{Cat,Cat} <: Tuple{Mammal,Mammal}
 true
 
-julia> Tuple{🐱,🐶} <: Tuple{Mammal,Mammal}
+julia> Tuple{Cat,Dog} <: Tuple{Mammal,Mammal}
 true
 
-julia> Tuple{🐶,🐱} <: Tuple{Mammal,Mammal}
+julia> Tuple{Dog,Cat} <: Tuple{Mammal,Mammal}
 true
 
-julia> Tuple{🐶,🐶} <: Tuple{Mammal,Mammal}
+julia> Tuple{Dog,Dog} <: Tuple{Mammal,Mammal}
 true
+=#
+
+Tuple{Cat,Crocodile} <: Tuple{Mammal,Mammal}
+#=
+julia> Tuple{Cat,Crocodile} <: Tuple{Mammal,Mammal}
+false
 =#
 
 # ------------------------------------------------------
@@ -201,14 +212,24 @@ ERROR: MethodError: no method matching myall(::typeof(println), ::Array{Int64,1}
 # ------------------------------------------------------
 # Function subtyping
 
-female_dogs = [🐶("Pinky"), 🐶("Pinny"), 🐶("Moonie")]
-female_cats = [🐱("Minnie"), 🐱("Queenie"), 🐱("Kittie")]
+female_dogs = [Dog("Pinky"), Dog("Pinny"), Dog("Moonie")]
+female_cats = [Cat("Minnie"), Cat("Queenie"), Cat("Kittie")]
 
-select(::Type{🐶}) = rand(female_dogs)
-select(::Type{🐱}) = rand(female_cats)
+select(::Type{Dog}) = rand(female_dogs)
+select(::Type{Cat}) = rand(female_cats)
 
-# Function: Mammal -> Union{🐶,🐱}
+# Function: Mammal -> Union{Dog,Cat}
 match(m::Mammal) = select(typeof(m))
+
+match(Dog("Astro"))
+match(Cat("Garfield"))
+#=
+julia> match(Dog("Astro"))
+Dog Moonie
+
+julia> match(Cat("Garfield"))
+Cat Kittie
+=#
 
 # It's ok to kiss mammals :-)
 kiss(m::Mammal) = "$m kissed!"
@@ -219,19 +240,19 @@ function meet_partner(finder::Function, self::Mammal)
     kiss(partner)
 end
 
-meet_partner(match, 🐱("Felix"))
+meet_partner(match, Cat("Felix"))
 #=
-julia> meet_partner(match, 🐱("Felix"))
-"🐱 Minnie kissed!"
+julia> meet_partner(match, Cat("Felix"))
+"Cat Kittie kissed!"
 =#
 
 # How about Mammal -> Vertebrate?
-neighbor(m::Mammal) = 🐊("Solomon")
+neighbor(m::Mammal) = Crocodile("Solomon")
 
-meet_partner(neighbor, 🐱("Felix"))
+meet_partner(neighbor, Cat("Felix"))
 #=
-julia> meet_partner(neighbor, 🐱("Felix"))
-ERROR: MethodError: no method matching excite(::🐊)
+julia> meet_partner(neighbor, Cat("Felix"))
+ERROR: MethodError: no method matching excite(::Crocodile)
 Closest candidates are:
   excite(::Mammal) at REPL[28]:2
 =#
@@ -241,17 +262,17 @@ Closest candidates are:
 
 # What about function arguments?
 
-# Function: 🐱 -> Mammal
-buddy(cat::🐱) = rand([🐶("Astro"), 🐶("Goofy"), 🐱("Lucifer")])
+# Function: Cat -> Mammal
+buddy(cat::Cat) = rand([Dog("Astro"), Dog("Goofy"), Cat("Lucifer")])
 
-meet_partner(buddy, 🐱("Felix"))
-meet_partner(buddy, 🐶("Chef"))
+meet_partner(buddy, Cat("Felix"))
+meet_partner(buddy, Dog("Chef"))
 #=
-julia> meet_partner(buddy, 🐱("Felix"))
-"🐱 Lucifer kissed!"
+julia> meet_partner(buddy, Cat("Felix"))
+"Cat Lucifer kissed!"
 
-julia> meet_partner(buddy, 🐶("Chef"))
-ERROR: MethodError: no method matching buddy(::🐶)
+julia> meet_partner(buddy, Dog("Chef"))
+ERROR: MethodError: no method matching buddy(::Dog)
 =#
 
 # "Be liberal in what you accept and conservative in what you produce."
@@ -329,21 +350,21 @@ function meet_partner(finder::TypedFunction1{T,S}, self::Mammal) where
     kiss(partner)
 end
 
-# Create a callable struct that takes Vertebrate and returns 🐱
-kissy_match(v::Vertebrate) = 🐱("Kissy")
-best_cat_matcher = TypedFunction1{Vertebrate,🐱}(kissy_match)
+# Create a callable struct that takes Vertebrate and returns Cat
+kissy_match(v::Vertebrate) = Cat("Kissy")
+best_cat_matcher = TypedFunction1{Vertebrate,Cat}(kissy_match)
 
 # Now we can pass this typed matcher
-meet_partner(best_cat_matcher, 🐶("Goofy"))
+meet_partner(best_cat_matcher, Dog("Goofy"))
 
-# Can we make a mistsake?  Let's try a 🐱 -> 🐱.
-cat_cat_match(cat::🐱) = 🐱("Brownie")
-brownie_matcher = TypedFunction1{🐱,🐱}(cat_cat_match)
+# Can we make a mistsake?  Let's try a Cat -> Cat.
+cat_cat_match(cat::Cat) = Cat("Brownie")
+brownie_matcher = TypedFunction1{Cat,Cat}(cat_cat_match)
 
-meet_partner(brownie_matcher, 🐶("Goofy"))
+meet_partner(brownie_matcher, Dog("Goofy"))
 #=
-julia> meet_partner(brownie_matcher, 🐶("Goofy"))
-ERROR: MethodError: no method matching meet_partner(::TypedFunction1{🐱,🐱}, ::🐶)
+julia> meet_partner(brownie_matcher, Dog("Goofy"))
+ERROR: MethodError: no method matching meet_partner(::TypedFunction1{Cat,Cat}, ::Dog)
 =#
 
 # Cool, so we're completely type-safe with function arguments.
