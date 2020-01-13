@@ -8,7 +8,7 @@ abstract type Cash <: Asset end
 abstract type House <: Property end
 abstract type Apartment <: Property end
 
-abstract type Bond <: Investment end
+abstract type FixedIncome <: Investment end
 abstract type Equity <: Investment end
 
 # Define concrete classes 
@@ -21,7 +21,7 @@ struct Stock <: Equity
     name
 end
 
-struct TreasuryBill <: Bond
+struct TreasuryBill <: FixedIncome
     cusip
 end
 
