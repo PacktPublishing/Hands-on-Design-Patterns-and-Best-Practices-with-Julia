@@ -10,12 +10,12 @@ struct AppKey
 end
 
 # placeholder for AppKey object.  Start with nothing until initialized.
-const appkey = Ref{Union{AppKey,Nothing}}(nothing)
+const appkey = Ref{AppKey}()
 
 # initializer
 function construct()
     global appkey
-    if appkey[] === nothing
+    if !isassigned(appkey)
         ak = AppKey("myapp", rand(UInt128))
         println("constructing $ak")
         appkey[] = ak
@@ -29,7 +29,6 @@ end
 
 function test_multithreading()
     println("Number of threads: ", Threads.nthreads())
-    global appkey[] = nothing
     Threads.@threads for i in 1:8
         construct()
     end
@@ -37,8 +36,11 @@ end
 
 end #module
 
+# first test
 using .SingletonExample
 SingletonExample.test()
+
+# Quit REPL, evaluate the module above, and run this test function.
 SingletonExample.test_multithreading()
 
 # test
@@ -68,10 +70,10 @@ struct AppKey
 end
 
 # placeholder for AppKey object.  Start with nothing until initialized.
-const appkey = Ref{Union{AppKey,Nothing}}(nothing)
+const appkey = Ref{AppKey}()
 
 # create a ReentrantLock 
-const appkey_lock = Ref{ReentrantLock}(ReentrantLock())
+const appkey_lock = Ref(ReentrantLock())
 
 # change construct() function to acquire lock before
 # construction, and release it after it's done.
@@ -80,10 +82,12 @@ function construct()
     global appkey_lock
     lock(appkey_lock[])
     try
-        if appkey[] === nothing
+        if !isassigned(appkey)
             ak = AppKey("myapp", rand(UInt128))
             println("constructing $ak")
             appkey[] = ak
+        else
+            println("skipped construction")
         end
     finally
         unlock(appkey_lock[])
@@ -93,7 +97,6 @@ end
 
 function test_multithreading()
     println("Number of threads: ", Threads.nthreads())
-    global appkey[] = nothing
     Threads.@threads for i in 1:8
         construct()
     end
