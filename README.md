@@ -47,10 +47,9 @@ Click on the following link to see the Code in Action:
 
 [YouTube](www.youtube.com/playlist?list=PLeLcvrwLe184DZW3gaIBXoAu0xHBt46SP)
 
-<!--
+
 ## Errata
--->
-<!--
+
 * Page 39 and 49:
  Before the user runs using Calculator, he/she can first go to the Pkg mode (by pressing the ] key) and then run the dev Calculator command.  E.g.
  
@@ -67,7 +66,6 @@ Path `/Users/tomkwong/.julia/dev/Calculator` exists and looks like the correct p
    Updating `~/.julia/environments/v1.4/Manifest.toml`
 
   [17fd2872] + Calculator v0.1.0 [`~/.julia/dev/Calculator`]
--->
 
 ### Related products
 * Julia 1.0 High Performance  [[Packt]](https://www.packtpub.com/application-development/julia-10-high-performance?utm_source=github&utm_medium=repository&utm_campaign=9781788298117) [[Amazon]](https://www.amazon.com/dp/1785880918)
