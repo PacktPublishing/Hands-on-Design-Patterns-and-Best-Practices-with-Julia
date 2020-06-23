@@ -45,7 +45,7 @@ With the following software and hardware list you can run all code files present
 
 Click on the following link to see the Code in Action:
 
-[YouTube] (www.youtube.com/playlist?list=PLeLcvrwLe184DZW3gaIBXoAu0xHBt46SP)
+[[YouTube]](www.youtube.com/playlist?list=PLeLcvrwLe184DZW3gaIBXoAu0xHBt46SP)
 
 ### Related products
 * Julia 1.0 High Performance  [[Packt]](https://www.packtpub.com/application-development/julia-10-high-performance?utm_source=github&utm_medium=repository&utm_campaign=9781788298117) [[Amazon]](https://www.amazon.com/dp/1785880918)
