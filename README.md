@@ -51,7 +51,7 @@ Click on the following link to see the Code in Action:
 ## Errata
 
 * Page 39 and 49:
-Before the user runs using Calculator, he/she can first go to the Pkg mode (by pressing the ] key) and then run the dev Calculator command.  E.g.
+Before the user runs using Calculator, he/she can first go to the Pkg mode (by pressing the ] key) and then run the dev Calculator command.  For example:
  ```
         (@v1.4) pkg> dev Calculator
 
