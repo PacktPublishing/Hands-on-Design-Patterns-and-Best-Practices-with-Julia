@@ -47,12 +47,11 @@ Click on the following link to see the Code in Action:
 
 [YouTube](www.youtube.com/playlist?list=PLeLcvrwLe184DZW3gaIBXoAu0xHBt46SP)
 
-
-
+<!--
 ## Errata
-
 * Page 5: command issue
  the command "pip istall npm" should be "pip install npm"
+-->
 
 
 ## Errata
