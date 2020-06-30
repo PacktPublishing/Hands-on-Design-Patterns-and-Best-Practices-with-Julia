@@ -47,11 +47,6 @@ Click on the following link to see the Code in Action:
 
 [YouTube](www.youtube.com/playlist?list=PLeLcvrwLe184DZW3gaIBXoAu0xHBt46SP)
 
-Errata
-
-* Page 36: Invalid command
-The command "pip instll npm" should be "pip install npm".
-
 ## Errata
 
 * Page 39 and 49:
