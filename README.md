@@ -39,7 +39,7 @@ With the following software and hardware list you can run all code files present
 ### Software and Hardware List
 | Chapter | Software required | OS required |
 | -------- | ------------------------------------ | ----------------------------------- |
-| 1-12 | Julia Version 1.3.0 | Windows, Mac OS X, and Linux (Any) |
+| 1-12 | Julia Version 1.3.0 or above | Windows, Mac OS X, and Linux (Any) |
 
 ## Code in Action
 
