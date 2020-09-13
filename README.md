@@ -45,7 +45,7 @@ With the following software and hardware list you can run all code files present
 
 Click on the following link to see the Code in Action:
 
-[YouTube](www.youtube.com/playlist?list=PLeLcvrwLe184DZW3gaIBXoAu0xHBt46SP)
+[YouTube](https://www.youtube.com/playlist?list=PLeLcvrwLe184DZW3gaIBXoAu0xHBt46SP)
 
 ## Errata
 
