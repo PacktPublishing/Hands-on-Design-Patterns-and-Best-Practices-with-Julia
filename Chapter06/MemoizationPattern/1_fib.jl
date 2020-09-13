@@ -58,8 +58,9 @@ function fib(n)
     end
 end
 
+# Benchmark performance. Make sure cache is emptied at each
 #=
-julia> @btime fib(40)
-  33.516 ns (0 allocations: 0 bytes)
+julia> @btime fib(40) setup=(empty!(fib_cache))
+  38.731 ns (0 allocations: 0 bytes)
 102334155
 =#
