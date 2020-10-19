@@ -66,6 +66,10 @@ Before running the using Calculator command, he/she can first go to the Pkg mode
 
           [17fd2872] + Calculator v0.1.0 [`~/.julia/dev/Calculator`]
 ```
+
+* Page 219:
+The `vendor_id` of the `TripPayment` has the wrong type. It should be `Int` rather than `String`.
+
 * Page 249:
 The second image on page number 249 is incorrect. The correct image is as follows:
 <img src="https://user-images.githubusercontent.com/1159782/93007143-19430980-f51a-11ea-9982-5fb58fc5ed01.png">
