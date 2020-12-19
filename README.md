@@ -72,6 +72,9 @@ Before running the using Calculator command, he/she can first go to the Pkg mode
           [17fd2872] + Calculator v0.1.0 [`~/.julia/dev/Calculator`]
 ```
 
+* Page 54:
+The `subtypetree` function does not work when there is cycle in the type hierarchy. It is generally not a problem with the exception that the `Any` type is a subtype of itself. So, running `subtypetree(Any)` would get into an infinite loop. Please see [Chapter02/subtypetree2.jl](Chapter02/subtypetree2.jl) for a more robust version.
+
 * Page 219:
 The `vendor_id` of the `TripPayment` has the wrong type. It should be `Int` rather than `String`.
 
