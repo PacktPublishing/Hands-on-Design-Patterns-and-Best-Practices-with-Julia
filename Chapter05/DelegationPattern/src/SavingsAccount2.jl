@@ -12,7 +12,7 @@ struct SavingsAccount2
     )
 end
 
-# Forward assessors and functions
+# Forward accessors and functions
 @forward SavingsAccount2.acct account_number, balance, date_opened
 @forward SavingsAccount2.acct deposit!, withdraw!
 

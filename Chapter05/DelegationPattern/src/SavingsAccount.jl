@@ -12,7 +12,7 @@ struct SavingsAccount
     )
 end
 
-# Forward assessors
+# Forward accessors
 account_number(sa::SavingsAccount) = account_number(sa.acct)
 balance(sa::SavingsAccount) = balance(sa.acct)
 date_opened(sa::SavingsAccount) = date_opened(sa.acct)
