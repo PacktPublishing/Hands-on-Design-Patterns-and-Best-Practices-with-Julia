@@ -22,7 +22,7 @@ describe(e::Property) = "Physical property"
 
 Returns the location of the property as a tuple of (latitude, longitude).
 """
-location(p::Property) = error("Location is not defined in the concrete type")
+location(p::Property) = error("Location is not defined in the abstract type")
 
 # an empty function
 """
