@@ -49,6 +49,8 @@ Click on the following link to see the Code in Action:
 
 ## Errata
 
+Page numbers below refer to the printed version. E-copy page numbers are slightly different.
+
 * Page 39 and 49:
 Before running the using Calculator command, he/she can first go to the Pkg mode (by pressing the ] key) and then run the dev Calculator command.  For example:
  ```
@@ -69,6 +71,17 @@ Before running the using Calculator command, he/she can first go to the Pkg mode
 
 * Page 54:
 The `subtypetree` function does not work when there is cycle in the type hierarchy. It is generally not a problem with the exception that the `Any` type is a subtype of itself. So, running `subtypetree(Any)` would get into an infinite loop. Please see [Chapter02/subtypetree2.jl](Chapter02/subtypetree2.jl) for a more robust version.
+
+* Page 110:
+The signature of the first `explode` function under Using type parameters section should take `<: Any` rather than just `Any`.
+```
+function explode(things::AbstractVector{<:Any})
+```
+
+Because every type is a subtype of `Any`, it is more idiomatic to omit the parametric part and use with a simpler syntax:
+```
+function explode(things::AbstractVector)
+```
 
 * Page 219:
 The `vendor_id` of the `TripPayment` has the wrong type. It should be `Int` rather than `String`.
