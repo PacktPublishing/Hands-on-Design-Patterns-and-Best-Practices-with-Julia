@@ -14,7 +14,7 @@ Nothing
 url = "http://google.com"
 if match(r"\.com$", url) !== nothing
     # do something about .com sites
-else if match(r"\.org$", url) !== nothing
+elseif match(r"\.org$", url) !== nothing
     # do something about .org sites
 else 
     # do something different
