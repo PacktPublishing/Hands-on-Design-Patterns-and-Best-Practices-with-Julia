@@ -3,9 +3,9 @@
 
 # Hands-On Design Patterns and Best Practices with Julia 
 
-<a href="https://www.packtpub.com/application-development/hands-design-patterns-julia-10?utm_source=github&utm_medium=repository&utm_campaign=9781838648817"><img src="https://www.packtpub.com/media/catalog/product/cache/bf3310292d6e1b4ca15aeea773aca35e/9/7/9781838648817-original.jpeg" alt="Hands-On Design Patterns and Best Practices with Julia " height="256px" align="right"></a>
+<a href="https://www.packtpub.com/en-us/product/hands-on-design-patterns-and-best-practices-with-julia-9781838646615"><img src="https://content.packt.com/_/image/original/B14109/cover_image_large.jpg" alt="Hands-On Design Patterns and Best Practices with Julia" height="256px" align="right"></a>
 
-This is the code repository for [Hands-On Design Patterns and Best Practices with Julia ](https://www.packtpub.com/application-development/hands-design-patterns-julia-10?utm_source=github&utm_medium=repository&utm_campaign=9781838648817), published by Packt.
+This is the code repository for [Hands-On Design Patterns and Best Practices with Julia ](https://www.packtpub.com/en-us/product/hands-on-design-patterns-and-best-practices-with-julia-9781838646615), published by Packt.
 
 **Proven solutions to common problems in software design for Julia 1.x**
 
@@ -74,6 +74,9 @@ Before running the using Calculator command, he/she can first go to the Pkg mode
 
 * Page 54:
 The `subtypetree` function does not work when there is cycle in the type hierarchy. It is generally not a problem with the exception that the `Any` type is a subtype of itself. So, running `subtypetree(Any)` would get into an infinite loop. Please see [Chapter02/subtypetree2.jl](Chapter02/subtypetree2.jl) for a more robust version.
+
+* Page 67:
+The hierarchy of numerical types in the diagram erroneously lists the concrete type `Bright` as a subtype of `Integer`; there is no such type that ships with Julia. For completeness, the diagram should have included the concrete type `BigInt` among the subtypes of the abstract type `Signed`.
 
 * Page 110:
 The signature of the first `explode` function under Using type parameters section should take `<: Any` rather than just `Any`.
