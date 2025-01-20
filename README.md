@@ -105,8 +105,9 @@ These pages contain typos where "accessor" was misspelled as "assessor".
 * Julia Programming Projects  [[Packt]](https://www.packtpub.com/big-data-and-business-intelligence/julia-programming-projects?utm_source=github&utm_medium=repository&utm_campaign=9781788292740) [[Amazon]](https://www.amazon.com/dp/178829274X)
 
 ## Get to Know the Author
-**Tom Kwong**
-, CFA, is an experienced software engineer with over 25 years of industry programming experience. He has spent the majority of his career in the financial services industry. His expertise includes software architecture, design, and the development of trading/risk systems. Since 2017, he has uncovered the Julia language and has worked on several open source packages, including SASLib.jl. He currently works at Western Asset Management Company, a prestige asset management company that specializes in fixed income investment services. He holds an MS degree in computer science from the University of California, Santa Barbara (from 1993), and he holds the Chartered Financial Analyst® designation since 2009.
+**Tom Kwong** is an experienced software engineer with over 30 years of industry programming experience. He spent the majority of his career in the financial services and tech industries. He currenlty works at Meta and has worked on Privacy Aware Infra and Ads Measurement infra products.
+
+His expertise includes software architecture, design, and the development of trading/risk systems. Since 2017, he has uncovered the Julia language and has worked on several open source packages, including SASLib.jl. He currently works at Western Asset Management Company, a prestige asset management company that specializes in fixed income investment services. He has MS degree in computer science from the University of California, Santa Barbara (1993), and he holds the Chartered Financial Analyst® designation during his tenure at Western Asset.
 
 ## Other books by the authors
 ### Suggestions and Feedback
